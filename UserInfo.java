@@ -1,5 +1,7 @@
 package OMS;
 
+import java.util.UUID;
+
 /* 
  * File: UserInfo
  * Copy: Copyright (c) 2023 Samuel W. Messer
@@ -8,34 +10,174 @@ package OMS;
  * Desc: Driver for testing concepts
  */
 
-public abstract class UserInfo implements Exportable {
+public class UserInfo implements Exportable {
     private String userId;
     private String userName;
     private String userPassword;
     private UserType userRole;
     
-    private enum UserType{
+    /**
+     * Constructor for creation of new users
+     */
+    public UserInfo(){
+        this.userId = UUID.randomUUID().toString();
+        this.userName = "";
+        this.userPassword = "";
+        this.userRole = UserType.Unknown;
+    }
+
+    /**
+     * Constructor for importing of user objects
+     * @param userId
+     * @param userName
+     * @param userPassword
+     * @param userRole 
+     */
+    public UserInfo(String userId, String userName, String userPassword, UserType userRole) {
+        this.userId = userId;
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.setUserRole(userRole);
+    }
+    
+    enum UserType{
         Customer,
         Employee,
         Unknown
     }
 
+    /**
+     * Exporting CSV format in manner that allows appending to the end
+     * Used in inherited classes
+     * @return 
+     */
     @Override
     public String toCSV() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String output = "";
+        
+        output += this.userId + ",";
+        output += this.userName + ",";
+        output += this.userPassword + ",";
+        output += this.userRole + ",";
+        
+        return output;
     }
-
+    
+    /**
+     * Exporting XML format in manner that allows appending to the end
+     * Used in inherited classes
+     * @return 
+     */
     @Override
     public String toXML() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String output = "";
+        
+        output += "<UserInfo>\n";
+        output += "     <userId>" + this.userId + "</userId>\n";
+        output += "     <userName>" + this.userName + "</userName>\n";
+        output += "     <userPassword>" + this.userPassword + "</userPassword>\n";
+        output += "     <userRole>" + this.userRole + "</userRole>\n";
+        
+        return output;
     }
     
-    public void fromCSV( String input ){
+    /**
+     * Exporting CSV format user info specifically
+     * @return 
+     */
+    public String toUserCSV(){
+        String output = "";
         
+        output += this.userId + ",";
+        output += this.userName + ",";
+        output += this.userPassword + ",";
+        output += this.userRole + "\n";
+        
+        
+        return output;
     }
     
-    public void fromXML( String input ){
+    /**
+     * Exporting XML format user info specifically 
+     * @return 
+     */
+    public String toUserXML(){
+        String output = "";
         
+        output += "<UserInfo>\n";
+        output += "     <userId>" + this.userId + "</userId>\n";
+        output += "     <userName>" + this.userName + "</userName>\n";
+        output += "     <userPassword>" + this.userPassword + "</userPassword>\n";
+        output += "     <userRole>" + this.userRole + "</userRole>\n";
+        output += "</UserInfo>\n";
+        
+        return output;
+    }
+    
+    /**
+     * Importing CSV formatted user info
+     * @param input
+     * @return 
+     * @throws Exception
+     */
+    public UserInfo fromCSV(String input) throws Exception{
+        UserInfo user = null;
+        String[] Chunks;
+        String userId = "";
+        String userName = "";
+        String userPassword = "";
+        UserType userRole;
+        
+        if ( input == null ){
+            throw new Exception("Error: Null input passed!");
+        } else if ( input.length() == 0 ){
+            throw new Exception("Error: Zero length input passed!");
+        } else {
+            Chunks = input.split(",");
+            
+            if (Chunks.length == 4){
+                userId = Chunks[0];
+                userName = Chunks[1];
+                userPassword = Chunks[2];
+                userRole = UserType.valueOf(Chunks[3]);
+                
+                if (( userId == null ) || (userId.length() == 0)){
+                    throw new Exception("Error: Invalid userId parsed!");
+                } else if (( userName == null ) || ( userName.length() == 0 )){
+                    throw new Exception("Error: Invalid user name parsed!");
+                } else if (( userPassword == null ) || ( userPassword.length() == 0 )){
+                    throw new Exception("Error: Invalid user password parsed!");
+                } else {
+                    user = new UserInfo(userId, userName, userPassword, userRole);
+                }
+            }
+        }
+        
+        return user;
+    }
+    
+    /**
+     * Importing XML formatted user info
+     * @param input
+     * @return
+     * @throws Exception 
+     */
+    public UserInfo fromXML(String input) throws Exception{
+        UserInfo user = null;
+        String[] Chunks;
+        String userId = "";
+        String userName = "";
+        String userPassword = "";
+        UserType userRole;
+        
+        if ( input == null ){
+            throw new Exception("Error: Null input passed!");
+        } else if ( input.length() == 0 ){
+            throw new Exception("Error: Zero length input passed!");
+        } else {
+            
+        }
+        return user;
     }
     
     /**
@@ -82,9 +224,19 @@ public abstract class UserInfo implements Exportable {
 
     /**
      * @param userRole the userRole to set
+     * @return 
      */
-    public void setUserRole(UserType userRole) {
-        this.userRole = userRole;
+    public boolean setUserRole(UserType userRole) {
+        boolean results = false;
+        
+        if( userRole == UserInfo.UserType.Unknown){
+            results = false; 
+        } else {
+            this.userRole = userRole;
+            results = true;
+        }
+        
+        return results;
     }
 }
 

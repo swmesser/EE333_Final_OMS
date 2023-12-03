@@ -8,7 +8,7 @@ package OMS;
  * Desc: Driver for testing concepts
  */
 
-public final class CustomerInfo extends UserInfo {
+public  class CustomerInfo extends UserInfo {
     private String firstname;
     private String lastname;
     private String email;
@@ -47,17 +47,25 @@ public final class CustomerInfo extends UserInfo {
     /**
      * Pulling info from single line in CSV format to return customer object
      * @param input 
+     * @return
+     * @throws Exception
      */
-    public void fromCSV( String input ){
+    public CustomerInfo fromCSV( String input ) throws Exception{
+        CustomerInfo customer = null;
         
+        return customer;
     }
     
     /**
      * Pulling info from XML formatted string to return customer object
      * @param input 
+     * @return 
+     * @throws Exception
      */
-    public void fromXML( String input ){
+    public CustomerInfo fromXML( String input ) throws Exception{
+        CustomerInfo customer = null;
         
+        return customer;
     }
     
     /**

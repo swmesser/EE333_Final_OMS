@@ -1,5 +1,9 @@
 package OMS;
 
+import java.util.UUID;
+import java.util.regex.Pattern;
+
+
 /* 
  * File: OrderInfo
  * Copy: Copyright (c) 2023 Samuel W. Messer
@@ -18,12 +22,42 @@ public class OrderInfo implements Exportable{
     //Import pulls data from the "Not Shipped" folder and archives them by moving to "Shipped"
 
     /**
+     * Constructor for creation of order objects
+     */
+    public OrderInfo(){
+        this.id = UUID.randomUUID().toString();
+        this.name = "";
+        this.subTotal = 0.0;
+        this.total = 0.0;
+    }
+    
+    /**
+     * Constructor used in importing of order objects
+     * @param id
+     * @param name
+     * @param subTotal 
+     */
+    public OrderInfo(String id, String name, double subTotal){
+        this.id = id;
+        this.name = name;
+        this.subTotal = subTotal;
+        this.total = (subTotal * 0.10) + subTotal; //Calculated using 10% tax
+    }
+    
+    /**
      * Pushing information to CSV format for export
      * @return 
      */
     @Override
     public String toCSV() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String output = "";
+        
+        output += this.id + ",";
+        output += this.name + ",";
+        output += this.subTotal + ",";
+        output += this.total + "\n";
+        
+        return output;
     }
 
     /**
@@ -32,23 +66,125 @@ public class OrderInfo implements Exportable{
      */
     @Override
     public String toXML() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String output = "";
+        
+        output += "<OrderInfo>\n";
+        output += "     <id>" + this.id + "</id>\n";
+        output += "     <name>" + this.name + "</name>\n";
+        output += "     <subTotal>" + this.subTotal + "</subTotal>\n";
+        output += "     <total>" + this.total + "</total>\n";
+        output += "</OrderInfo>\n";
+        
+        return output;
     }
     
     /**
      * Pulling information from singular line from file to create order object
      * @param input 
      */
-    public void fromCSV( String input ){
+    public OrderInfo fromCSV( String input ) throws Exception{
+        OrderInfo order = null;
+        String[] Chunks;
+        String id = "";
+        String name = "";
+        double subTotal = 0.0;
+        double total = 0.0;
         
+        // Validation of input string from call
+        if ( input == null ){
+            throw new Exception("Error: Null input!");
+        } else if ( input.length() == 0 ){
+            throw new Exception("Error: Zero length input!");
+        } else {
+            Chunks = input.split(",");
+            
+            //validation of correct variable counts
+            if ( Chunks.length == 4 ) {
+                id = Chunks[0];
+                name = Chunks[1];
+                subTotal = Double.parseDouble(Chunks[2]);
+                total = Double.parseDouble(Chunks[3]);
+                
+                //verification of valid parameters
+                if (( id == null ) | ( id.length() == 0 )){
+                    throw new Exception("Error: Invalid Id parsed!");
+                } else if (( name == null ) | ( name.length() == 0 )){
+                    throw new Exception("Error: Invalid name parsed!");
+                } else {
+                    order = new OrderInfo(id, name, subTotal);
+                    order.setTotal(total);
+                }
+            }
+        }
+        return order;
     }
     
     /**
      * Pulling information from singular line from file to read using regex to create order object
      * @param input 
      */
-    public void fromXML( String input ){
+    public OrderInfo fromXML( String input )throws Exception{
+        OrderInfo order = null;
+        String[] Chunks;
+        String id = "";
+        String name = "";
+        double subTotal = 0.0;
+        double total = 0.0;
         
+        if ( input == null ){
+            throw new Exception("Error: Null input passed!");
+        } else if ( input.length() == 0 ){
+            throw new Exception("Error: Zero length input passed!");
+        } else{
+            //REGEX for orderInfo
+            java.util.regex.Pattern regex = java.util.regex.Pattern.compile("<OrderInfo>(.*)</OrderInfo>");
+            //Checking for matches
+            java.util.regex.Matcher matcher = regex.matcher( input );
+
+            for ( int index = 0; index < matcher.groupCount(); index++ ){
+                if( matcher.find() == true ){
+                    //Pattern for id 
+                    regex = Pattern.compile("<id>(.*)</id>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        id = matcher.group(1);
+                    }
+
+                    //Pattern for name
+                    regex = Pattern.compile("<name>(.*)</name>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        name = matcher.group(1);
+                    }
+
+                    //Pattern for subTotal
+                    regex = Pattern.compile("<subTotal>(.*)</subTotal>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        subTotal = Double.parseDouble( matcher.group(1));
+                    }
+
+                    //Pattern for total
+                    regex = Pattern.compile("<total>(.*)</total>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        total = Double.parseDouble( matcher.group(1));
+                    }
+                }
+
+                //Verification of valid parameters for object creation
+                if (( id == null ) | ( id.length() == 0 )){
+                    throw new Exception("Error: Invalid Id parsed!");
+                } else if (( name == null ) | ( name.length() == 0 )){
+                    throw new Exception("Error: Invalid name parsed!");
+                } else {
+                    order = new OrderInfo(id, name, subTotal);
+                    order.setTotal(total);
+                }
+
+            }
+        }
+        return order;
     }
     
     /**
