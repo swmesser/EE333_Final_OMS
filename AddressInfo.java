@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
  * Copy: Copyright (c) 2023 Samuel W. Messer
  * BlazerID: swmesser
  * Vers: 1.0.0 Nov 29, 2023 SWM - Original Coding
- * Desc: Address class with i/o capabilites
+ * Desc: Address class for I/O
  */
 
 public class AddressInfo {
