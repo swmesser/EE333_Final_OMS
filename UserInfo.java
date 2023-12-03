@@ -1,6 +1,9 @@
 package OMS;
 
 import java.util.UUID;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+import javax.swing.RowFilter;
 
 /* 
  * File: UserInfo
@@ -168,13 +171,57 @@ public class UserInfo implements Exportable {
         String userId = "";
         String userName = "";
         String userPassword = "";
-        UserType userRole;
+        UserType userRole = UserType.Unknown;
         
         if ( input == null ){
             throw new Exception("Error: Null input passed!");
         } else if ( input.length() == 0 ){
             throw new Exception("Error: Zero length input passed!");
         } else {
+            java.util.regex.Pattern regex = Pattern.compile("<UserInfo>(.*)</UserInfo>");
+            java.util.regex.Matcher matcher = regex.matcher(input);
+            
+            for (int index = 0; index < matcher.groupCount(); index++ ){
+                if (matcher.find() == true ){
+                    //Pattern for userId
+                    regex = Pattern.compile("<userId>(.*)</userId>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        userId = matcher.group(1);
+                    }
+                    
+                    //Pattern for userName 
+                    regex = Pattern.compile("<userName>(.*)</userName>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        userName = matcher.group(1);
+                    }
+                    
+                    //Pattern for userPassword
+                    regex = Pattern.compile("<userPassword>(.*)</userPassword>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        userPassword = matcher.group(1);
+                    }
+                    
+                    //Pattern for userRole
+                    regex = Pattern.compile("<userRole>(.*)</userRole>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        userRole = UserType.valueOf( matcher.group(1));
+                    }
+                    
+                    if (( userId == null ) || ( userId.length() == 0 )){
+                        throw new Exception("Error: Invalid user id parsed!");
+                    } else if (( userName == null ) || ( userName.length() == 0 )){
+                        throw new Exception("Error: Invalid user name parsed!");
+                    } else if (( userPassword == null ) || ( userPassword.length() == 0 )){
+                        throw new Exception("Error: Invalid user password parsed!");
+                    } else {
+                        user = new UserInfo(userId, userName, userPassword, userRole);
+                    }
+                }
+            }
             
         }
         return user;
