@@ -1,5 +1,7 @@
 package OMS;
 
+import java.util.regex.Pattern;
+
 /* 
  * File: RelayInfo
  * Copy: Copyright (c) 2023 Samuel W. Messer
@@ -20,6 +22,106 @@ public abstract class RelayInfo extends ProductInfo{
     private String terminationStyle;
     private RelayMountingType mount;
 
+    /**
+     * Constructor for initialization of relay object
+     */
+    public RelayInfo() {
+        this.contactCurrentRating = 0.0;
+        this.mustOperateVolt = 0.0;
+        this.mustReleaseVolt = 0.0;
+        this.operateTime = 0.0;
+        this.releaseTime = 0.0;
+        this.operationTemp = 0.0;
+        this.coilVoltage = 0.0;
+        this.features = "";
+        this.terminationStyle = "";
+        this.mount = RelayMountingType.Unknown;
+    }
+
+    /**
+     * Constructor for importing of relay objects
+     * @param contactCurrentRating
+     * @param mustOperateVolt
+     * @param mustReleaseVolt
+     * @param operateTime
+     * @param releaseTime
+     * @param operationTemp
+     * @param coilVoltage
+     * @param features
+     * @param terminationStyle
+     * @param mount
+     * @param itemId
+     * @param name
+     * @param description
+     * @param mfg
+     * @param mfgPartNum
+     * @param series
+     * @param qty
+     * @param price
+     * @throws Exception 
+     */
+    public RelayInfo(double contactCurrentRating, double mustOperateVolt, double mustReleaseVolt, double operateTime, double releaseTime, double operationTemp, double coilVoltage, String features, String terminationStyle, RelayMountingType mount, String itemId, String name, String description, String mfg, String mfgPartNum, String series, int qty, double price) throws Exception {
+        super(itemId, name, description, mfg, mfgPartNum, series, qty, price);
+        this.contactCurrentRating = contactCurrentRating;
+        this.mustOperateVolt = mustOperateVolt;
+        this.mustReleaseVolt = mustReleaseVolt;
+        this.operateTime = operateTime;
+        this.releaseTime = releaseTime;
+        this.operationTemp = operationTemp;
+        this.coilVoltage = coilVoltage;
+        this.features = features;
+        this.terminationStyle = terminationStyle;
+        this.mount = mount;
+    }
+    
+    /**
+     * CSV format of relay object for export
+     * @return 
+     */
+    @Override
+    public String toCSV() {
+        String output = "";
+        
+        output += super.toCSV(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        output += this.getContactCurrentRating() + ",";
+        output += this.getMustOperateVolt() + ",";
+        output += this.getMustReleaseVolt() + ",";
+        output += this.getOperateTime() + ",";
+        output += this.getReleaseTime() + ",";
+        output += this.getFeatures() + ",";
+        output += this.getTerminationStyle() + ",";
+        output += this.getOperationTemp() + ",";
+        output += this.getCoilVoltage() + ",";
+        output += this.getMount() + ",";
+        
+        return(output);
+    }
+    
+    /**
+     * XML format of relay object for export
+     * @return 
+     */
+    @Override
+    public String toXML() {
+        String output = "";
+        
+        output += super.toXML(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        output += "     <RelayInfo>\n";
+        output += "         <contactCurrentRating>" + this.getContactCurrentRating() + "</contactCurrentRating>\n";
+        output += "         <mustOperateVolt>" + this.getMustOperateVolt() + "</mustOperateVolt>\n";
+        output += "         <mustReleaseVolt>" + this.getMustReleaseVolt() + "</mustReleaseVolt>\n";
+        output += "         <operateTime>" + this.getOperateTime() + "</operateTime>\n";
+        output += "         <releaseTime>" + this.getReleaseTime() + "</releaseTime>\n";
+        output += "         <features>" + this.getFeatures() + "</features>\n";
+        output += "         <terminationStyle>" + this.getTerminationStyle() + "</terminationStyle>\n";
+        output += "         <operationTemp>" + this.getOperationTemp() + "</operationTemp>\n";
+        output += "         <coilVoltage>" + this.getCoilVoltage() + "</coilVoltage>\n";
+        output += "         <mount>" + this.getMount() + "</mount>\n";
+        
+        
+        return(output);
+    }
+    
     /**
      * @return the contactCurrentRating
      */
@@ -161,297 +263,6 @@ public abstract class RelayInfo extends ProductInfo{
     }
 }
 
-final class PowerRelayInfo extends RelayInfo{
-    private double coilCurrent;
-    private double coilInsulation;
-    private String contactForm;
-    private RelayCoilType coil;
-    private String sealRating;
-    private String contactMaterial;
-    private String relayType;
-
-    @Override
-    public String toCSV() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public String toXML() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    /**
-     * @return the contactForm
-     */
-    public String getContactForm() {
-        return contactForm;
-    }
-
-    /**
-     * @param contactForm the contactForm to set
-     */
-    public void setContactForm(String contactForm) {
-        this.contactForm = contactForm;
-    }
-
-    /**
-     * @return the coilCurrent
-     */
-    public double getCoilCurrent() {
-        return coilCurrent;
-    }
-
-    /**
-     * @param coilCurrent the coilCurrent to set
-     */
-    public void setCoilCurrent(double coilCurrent) {
-        this.coilCurrent = coilCurrent;
-    }
-
-    /**
-     * @return the coil
-     */
-    public RelayCoilType getCoil() {
-        return coil;
-    }
-
-    /**
-     * @param coil the coil to set
-     */
-    public void setCoil(RelayCoilType coil) {
-        this.coil = coil;
-    }
-
-    /**
-     * @return the sealRating
-     */
-    public String getSealRating() {
-        return sealRating;
-    }
-
-    /**
-     * @param sealRating the sealRating to set
-     */
-    public void setSealRating(String sealRating) {
-        this.sealRating = sealRating;
-    }
-
-    /**
-     * @return the coilInsulation
-     */
-    public double getCoilInsulation() {
-        return coilInsulation;
-    }
-
-    /**
-     * @param coilInsulation the coilInsulation to set
-     */
-    public void setCoilInsulation(double coilInsulation) {
-        this.coilInsulation = coilInsulation;
-    }
-
-    /**
-     * @return the contactMaterial
-     */
-    public String getContactMaterial() {
-        return contactMaterial;
-    }
-
-    /**
-     * @param contactMaterial the contactMaterial to set
-     */
-    public void setContactMaterial(String contactMaterial) {
-        this.contactMaterial = contactMaterial;
-    }
-
-    /**
-     * @return the relayType
-     */
-    public String getRelayType() {
-        return relayType;
-    }
-
-    /**
-     * @param relayType the relayType to set
-     */
-    public void setRelayType(String relayType) {
-        this.relayType = relayType;
-    }
-}
-
-final class SignalRelayInfo extends RelayInfo{
-    private double coilInsulation;
-    private String contactForm;
-    private String sealRating;
-    private String contactMaterial;
-    private String relayType;
-
-    @Override
-    public String toCSV() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public String toXML() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    /**
-     * @return the contactForm
-     */
-    public String getContactForm() {
-        return contactForm;
-    }
-
-    /**
-     * @param contactForm the contactForm to set
-     */
-    public void setContactForm(String contactForm) {
-        this.contactForm = contactForm;
-    }
-
-    /**
-     * @return the sealRating
-     */
-    public String getSealRating() {
-        return sealRating;
-    }
-
-    /**
-     * @param sealRating the sealRating to set
-     */
-    public void setSealRating(String sealRating) {
-        this.sealRating = sealRating;
-    }
-
-    /**
-     * @return the coilInsulation
-     */
-    public double getCoilInsulation() {
-        return coilInsulation;
-    }
-
-    /**
-     * @param coilInsulation the coilInsulation to set
-     */
-    public void setCoilInsulation(double coilInsulation) {
-        this.coilInsulation = coilInsulation;
-    }
-
-    /**
-     * @return the contactMaterial
-     */
-    public String getContactMaterial() {
-        return contactMaterial;
-    }
-
-    /**
-     * @param contactMaterial the contactMaterial to set
-     */
-    public void setContactMaterial(String contactMaterial) {
-        this.contactMaterial = contactMaterial;
-    }
-
-    /**
-     * @return the relayType
-     */
-    public String getRelayType() {
-        return relayType;
-    }
-
-    /**
-     * @param relayType the relayType to set
-     */
-    public void setRelayType(String relayType) {
-        this.relayType = relayType;
-    }
-}
-
-final class AutomotiveRelayInfo extends RelayInfo{
-    private double coilCurrent;
-    private RelayCoilType coil;
-
-    @Override
-    public String toCSV() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public String toXML() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    /**
-     * @return the coilCurrent
-     */
-    public double getCoilCurrent() {
-        return coilCurrent;
-    }
-
-    /**
-     * @param coilCurrent the coilCurrent to set
-     */
-    public void setCoilCurrent(double coilCurrent) {
-        this.coilCurrent = coilCurrent;
-    }
-
-    /**
-     * @return the coil
-     */
-    public RelayCoilType getCoil() {
-        return coil;
-    }
-
-    /**
-     * @param coil the coil to set
-     */
-    public void setCoil(RelayCoilType coil) {
-        this.coil = coil;
-    }
-}
-
-final class HighFrequencyRelayInfo extends RelayInfo{
-    private String contactForm;
-    private RelayCoilType coil;
-    
-    @Override
-    public String toCSV() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public String toXML() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    /**
-     * @return the contactForm
-     */
-    public String getContactForm() {
-        return contactForm;
-    }
-
-    /**
-     * @param contactForm the contactForm to set
-     */
-    public void setContactForm(String contactForm) {
-        this.contactForm = contactForm;
-    }
-
-    /**
-     * @return the coil
-     */
-    public RelayCoilType getCoil() {
-        return coil;
-    }
-
-    /**
-     * @param coil the coil to set
-     */
-    public void setCoil(RelayCoilType coil) {
-        this.coil = coil;
-    }
-}
 
 //Relay Enum
 enum RelayCoilType{

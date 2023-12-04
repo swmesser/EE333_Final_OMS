@@ -123,7 +123,7 @@ public class UserInfo implements Exportable {
      * @return 
      * @throws Exception
      */
-    public UserInfo fromCSV(String input) throws Exception{
+    public static UserInfo fromCSV(String input) throws Exception{
         UserInfo user = null;
         String[] Chunks;
         String userId = "";
@@ -165,7 +165,7 @@ public class UserInfo implements Exportable {
      * @return
      * @throws Exception 
      */
-    public UserInfo fromXML(String input) throws Exception{
+    public static UserInfo fromXML(String input) throws Exception{
         UserInfo user = null;
         String[] Chunks;
         String userId = "";

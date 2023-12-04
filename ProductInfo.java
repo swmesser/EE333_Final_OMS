@@ -31,6 +31,144 @@ public abstract class ProductInfo implements Exportable{
     private PackageOption shippingPackage;
 
     /**
+     * Constructor for creation of empty Product objects
+     */
+    public ProductInfo(){
+        this.itemId = "";
+        this.name = "";
+        this.description = "";
+        this.series = "";
+        this.manufacturer = "";
+        this.mfgPartNumber = "";
+        this.qtyAvailable = 0;
+        this.price = 0.0;
+        this.availability = StockOption.unknown;
+        this.hazards = EnvironmentalOption.unknown;
+        this.media = MediaOption.unknown;
+        this.status = ProductStatus.unknown;
+        this.shippingPackage = PackageOption.unknown;
+        
+    }
+    
+    /**
+     * Constructor for importing data from files (necessary params)
+     * @param itemId
+     * @param name
+     * @param description
+     * @param qty
+     * @param price
+     * @throws Exception 
+     */
+    public ProductInfo( String itemId, String name, String description, int qty, double price) throws Exception{
+        this();
+        
+        if (( name == null ) || ( name.length() == 0 )){
+            throw new Exception("Error: Passed invalid name!");
+        } else if (( description == null) || ( description.length() == 0 )){
+            throw new Exception("Error: Passed invalid description!");
+        } else if (( itemId.length() == 0 ) || ( itemId == null)){
+            throw new Exception("Error: Invalid itemId passed!");
+        } else {
+            this.itemId = itemId;
+            this.name = name;
+            this.description = description;
+            this.qtyAvailable = qty;
+            this.price = price;
+            this.availability = StockOption.newProduct;
+            this.status = ProductStatus.active;
+        }
+    }
+    
+    /**
+     * Constructor for importing entire product objects
+     * @param itemId
+     * @param name
+     * @param description
+     * @param mfg
+     * @param mfgPartNum
+     * @param series
+     * @param qty
+     * @param price
+     * @throws Exception 
+     */
+    public ProductInfo( String itemId, String name, String description, String mfg, 
+            String mfgPartNum, String series, int qty, double price ) throws Exception {
+        this(itemId, name, description, qty, price);
+        
+        if (( mfg == null ) || ( mfg.length() == 0 )){
+            throw new Exception("Error: Passed invalid manufacturer name!");
+        } else if (( mfgPartNum == null ) || ( mfgPartNum.length() == 0 )){
+            throw new Exception("Error: Passed invalid manufacturer part number!");
+        } else if (( series == null ) || ( series.length() == 0 )){
+            throw new Exception("Error: Passed invalid series!");
+        } else if ( qty < 0 ){
+            throw new Exception("Error: Passed invalid quantity!");
+        } else if ( price < 0.0 ){
+            throw new Exception("Error: Passed invalid price!");
+        } else {
+            this.manufacturer = mfg;
+            this.mfgPartNumber = mfgPartNum;
+            this.series = series;
+        }
+    }
+    
+    /**
+     * Formatting ProductInfo as CSV for export
+     * @return 
+     */
+    @Override
+    public String toCSV() {
+        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String output = "";
+        
+        output += this.itemId + ",";
+        output += this.name + ",";
+        output += this.description + ",";
+        output += this.manufacturer + ",";
+        output += this.mfgPartNumber + ",";
+        output += this.series + ",";
+        output += this.availability + ",";
+        output += this.status + ",";
+        output += this.media + ",";
+        output += this.hazards + ",";
+        output += this.shippingPackage + ",";
+        output += this.qtyAvailable + ",";
+        output += this.price + ",";
+        
+        
+        return( output );
+    }
+    
+    /**
+     * XML formatting of product object for export
+     * @return 
+     */
+    @Override
+    public String toXML() {
+        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String output = "";
+        
+        output += "<ProductInfo>" + '\n';
+        output += "     <itemId>" + this.itemId + "</itemId>\n";
+        output += "     <name>" + this.name + "</name>\n";
+        output += "     <description>" + this.description + "</description>\n";
+        output += "     <manufacturer>" + this.manufacturer + "</manufacturer>\n";
+        output += "     <mfgPartNumber>" + this.mfgPartNumber + "</mfgPartNumber>\n";
+        output += "     <series>" + this.series + "</series>\n";
+        output += "     <availability>" + this.availability + "</availability>\n";
+        output += "     <status>" + this.status + "</status>\n";
+        output += "     <media>" + this.media + "</media>\n";
+        output += "     <hazards>" + this.hazards + "</hazards>\n";
+        output += "     <shippingPackage>" + this.shippingPackage + "</shippingPackage>\n";
+        output += "     <qtyAvailable>" + this.qtyAvailable + "</qtyAvailable>\n";
+        output += "     <price>" + this.price + "</price>\n";
+        output += "</ProductInfo>\n";
+        
+        
+        return( output );
+    }   
+    
+    /**
      * @return the itemId
      */
     public String getItemId() {
@@ -205,25 +343,6 @@ public abstract class ProductInfo implements Exportable{
         this.shippingPackage = shippingPackage;
     }
     
-    /**
-     * Push information to CSV format for export
-     * @return 
-     */
-    public String toCSV(){
-        String output = "";
-        
-        return ( output );
-    }
-    
-    /**
-     * Push information to XML format for export
-     * @return 
-     */
-    public String toXML(){
-        String output = "";
-        
-        return( output );
-    }
 }
 
 

@@ -233,7 +233,7 @@ public class OrderInfo implements Exportable{
      * @param total the total to set
      */
     public void setTotal(double total) {
-        this.total = total;
+        this.total = ( this.subTotal * 0.10) + this.subTotal;
     }
 
 }

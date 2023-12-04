@@ -47,7 +47,7 @@ public class AddressInfo {
         output += this.street + ",";
         output += this.city + ",";
         output += this.state + ",";
-        output += this.zipcode + "\n";
+        output += this.zipcode ;
         
         return output;
     }
@@ -59,12 +59,12 @@ public class AddressInfo {
     public String toXML(){
         String output = "";
         
-        output += "<AddressInfo>\n";
-        output += "     <street>" + this.street + "</street>\n";
-        output += "     <city>" + this.city + "</city>\n";
-        output += "     <state>" + this.state + "</state>\n";
-        output += "     <zipcode>" + this.zipcode + "</zipcode>\n";
-        output += "</AddressInfo>\n";
+        output += "         <AddressInfo>\n";
+        output += "             <street>" + this.street + "</street>\n";
+        output += "             <city>" + this.city + "</city>\n";
+        output += "             <state>" + this.state + "</state>\n";
+        output += "             <zipcode>" + this.zipcode + "</zipcode>\n";
+        output += "         </AddressInfo>\n";
         
         return output;
     }
@@ -75,7 +75,7 @@ public class AddressInfo {
      * @return 
      * @throws Exception
      */
-    public AddressInfo fromCSV( String input ) throws Exception{
+    public static AddressInfo fromCSV( String input ) throws Exception{
         AddressInfo address = null;
         String[] Chunks;
         String street;
@@ -119,7 +119,7 @@ public class AddressInfo {
      * @return
      * @throws Exception
      */
-    public AddressInfo fromXML( String input ) throws Exception{
+    public static AddressInfo fromXML( String input ) throws Exception{
         AddressInfo address = null;
         String[] Chunks;
         String street = "";

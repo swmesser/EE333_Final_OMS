@@ -1,5 +1,7 @@
 package OMS;
 
+import java.util.regex.Pattern;
+
 /* 
  * File: EmployeeInfo
  * Copy: Copyright (c) 2023 Samuel W. Messer
@@ -89,8 +91,7 @@ public  class EmployeeInfo extends UserInfo {
      * @return 
      * @throws java.lang.Exception 
      */
-    @Override
-    public EmployeeInfo fromCSV( String input ) throws Exception{
+    public static EmployeeInfo fromCSV( String input ) throws Exception{
         EmployeeInfo employee = null;
         String[] Chunks;
         String userId = "";
@@ -139,24 +140,93 @@ public  class EmployeeInfo extends UserInfo {
      * @return  
      * @throws java.lang.Exception  
      */
-    @Override
-    public EmployeeInfo fromXML( String input ) throws Exception{
+    public static EmployeeInfo fromXML( String input ) throws Exception{
         EmployeeInfo employee = null;
-        String[] Chunks;
         String userId = "";
         String userName = "";
         String userPassword = "";
         String firstname = "";
         String lastname = "";
-        UserType userType;
-        EmployeeRole role;
+        UserType userRole = UserType.Unknown;
+        EmployeeRole role = EmployeeRole.Unknown;
         
         if ( input == null ){
             throw new Exception("Error: Null input passed!");
         } else if ( input.length() == 0 ){
             throw new Exception("Error: Zero length input passed!");
         } else {
+            //Main Pattern 
+            java.util.regex.Pattern regex = Pattern.compile("<UserInfo>(.*)</UserInfo>");
+            //Matcher 
+            java.util.regex.Matcher matcher = regex.matcher(input);
             
+            for ( int index = 0; index < matcher.groupCount(); index++ ){
+                if ( matcher.find() == true ){
+                    //Secondary Pattern
+                    regex = Pattern.compile("<EmployeeInfo>(.*)</EmployeeInfo>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        //userId Pattern
+                        regex = Pattern.compile("<userId>(.*)</userId>");
+                        matcher = regex.matcher(input);
+                        if( matcher.find() == true ){
+                            userId = matcher.group(1);
+                        }
+                        
+                        //userName Pattern
+                        regex = Pattern.compile("<userName>(.*)</userName>");
+                        matcher = regex.matcher(input);
+                        if( matcher.find() == true ){
+                            userName = matcher.group(1);
+                        }
+                        
+                        //userPassword Pattern
+                        regex = Pattern.compile("<userPassword>(.*)</userPassword>");
+                        matcher = regex.matcher(input);
+                        if( matcher.find() == true ){
+                            userPassword = matcher.group(1);
+                        }
+                        
+                        //userRole Pattern
+                        regex = Pattern.compile("<userRole>(.*)</userRole>");
+                        matcher = regex.matcher(input);
+                        if( matcher.find() == true ){
+                            userRole = UserType.valueOf( matcher.group(1));
+                        }
+                        
+                        //firstname Pattern
+                        regex = Pattern.compile("<firstname>(.*)</firstname>");
+                        matcher = regex.matcher(input);
+                        if( matcher.find() == true ){
+                            firstname = matcher.group(1);
+                        }
+                        
+                        //lastname Pattern
+                        regex = Pattern.compile("<lastname>(.*)</lastname>");
+                        matcher = regex.matcher(input);
+                        if( matcher.find() == true ){
+                            lastname = matcher.group(1);
+                        }
+                        
+                        //role Pattern 
+                        regex = Pattern.compile("<role>(.*)</role>");
+                        matcher = regex.matcher(input);
+                        if ( matcher.find() == true ){
+                            role = EmployeeRole.valueOf( matcher.group(1));
+                        }
+                        
+                        if (( firstname == null ) || ( firstname.length() == 0 )){
+                            throw new Exception("Error: Invalid firstname parsed!");
+                        } else if (( lastname == null ) || ( lastname.length() == 0 )){
+                            throw new Exception("Error: Invalid lastname parsed!");
+                        } else {
+                            employee = new EmployeeInfo(firstname, lastname, role,
+                                    userId, userName, userPassword, userRole);
+                        }
+                    }
+                    
+                }
+            }
         }
         
         return employee;
