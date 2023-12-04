@@ -49,12 +49,23 @@ public abstract class FilterInfo extends ProductInfo {
      */
     public FilterInfo(int resonantFreq, int bandwidth, double size, double height, FilterType filterType, MountingTypeEnum mountingType, String itemId, String name, String description, String mfg, String mfgPartNum, String series, int qty, double price) throws Exception {
         super(itemId, name, description, mfg, mfgPartNum, series, qty, price);
-        this.resonantFreq = resonantFreq;
-        this.bandwidth = bandwidth;
-        this.size = size;
-        this.height = height;
-        this.filterType = filterType;
-        this.mountingType = mountingType;
+        
+        if ( resonantFreq < 0 ){
+            throw new Exception("Error: Invalid resonant frequency passed!");
+        } else if ( bandwidth < 0 ){
+            throw new Exception("Error: Invalid bandwidth passed!");
+        } else if ( size < 0.0 ){
+            throw new Exception("Error: Invalid size passed!");
+        } else if ( height < 0.0 ){
+            throw new Exception("Error: Invalid height passed!");
+        } else {
+            this.resonantFreq = resonantFreq;
+            this.bandwidth = bandwidth;
+            this.size = size;
+            this.height = height;
+            this.filterType = filterType;
+            this.mountingType = mountingType;
+        }
     }
     
     /**
@@ -75,6 +86,10 @@ public abstract class FilterInfo extends ProductInfo {
         return output;
     }
     
+    /**
+     * XML format for export
+     * @return 
+     */
     public String toXML(){
         String output = "";
         
@@ -83,6 +98,7 @@ public abstract class FilterInfo extends ProductInfo {
         output += "             <resonantFreq>" + this.resonantFreq + "</resonantFreq>\n";
         output += "             <bandwidth>" + this.bandwidth + "</bandwidth>\n";
         output += "             <size>" + this.size + "</size>\n";
+        output += "             <height>" + this.height + "</height>\n";
         output += "             <filterType>" + this.filterType + "</filterType>\n";
         output += "             <mountingType>" + this.mountingType + "</mountingType>\n";
         

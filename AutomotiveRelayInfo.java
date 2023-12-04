@@ -49,8 +49,13 @@ public final class AutomotiveRelayInfo extends RelayInfo{
      */
     public AutomotiveRelayInfo(double coilCurrent, RelayCoilType coil, double contactCurrentRating, double mustOperateVolt, double mustReleaseVolt, double operateTime, double releaseTime, double operationTemp, double coilVoltage, String features, String terminationStyle, RelayMountingType mount, String itemId, String name, String description, String mfg, String mfgPartNum, String series, int qty, double price) throws Exception {
         super(contactCurrentRating, mustOperateVolt, mustReleaseVolt, operateTime, releaseTime, operationTemp, coilVoltage, features, terminationStyle, mount, itemId, name, description, mfg, mfgPartNum, series, qty, price);
-        this.coilCurrent = coilCurrent;
-        this.coil = coil;
+        
+        if ( coilCurrent < 0.0 ){
+            throw new Exception("Error: Invalid coil current passed!");
+        } else {
+            this.coilCurrent = coilCurrent;
+            this.coil = coil;
+        }
     }
     
     /**

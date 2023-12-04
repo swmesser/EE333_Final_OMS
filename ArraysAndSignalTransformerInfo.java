@@ -78,20 +78,47 @@ public final class ArraysAndSignalTransformerInfo extends InductorCoilAndChokesI
      */
     public ArraysAndSignalTransformerInfo(int coilNumber, double parallelInductance, double seriesInductance, double parallelCurrentRating, double seriesCurrentRating, double parallelCurrentSaturation, double seriesCurrentSaturation, double parallelDCResistance, double seriesDCResistance, double operatingTemp, ArrayInductorShielding shielding, InductorRating rating, String height, String size, double tolerance, InductorMountingType mount, String packageCase, String itemId, String name, String description, String mfg, String mfgPartNum, String series, int qty, double price) throws Exception {
         super(tolerance, mount, packageCase, itemId, name, description, mfg, mfgPartNum, series, qty, price);
-        this.coilNumber = coilNumber;
-        this.parallelInductance = parallelInductance;
-        this.seriesInductance = seriesInductance;
-        this.parallelCurrentRating = parallelCurrentRating;
-        this.seriesCurrentRating = seriesCurrentRating;
-        this.parallelCurrentSaturation = parallelCurrentSaturation;
-        this.seriesCurrentSaturation = seriesCurrentSaturation;
-        this.parallelDCResistance = parallelDCResistance;
-        this.seriesDCResistance = seriesDCResistance;
-        this.operatingTemp = operatingTemp;
-        this.shielding = shielding;
-        this.rating = rating;
-        this.height = height;
-        this.size = size;
+        
+        if ( coilNumber < 0 ){
+            throw new Exception("Error: Invalid coil number passed!");
+        } else if ( parallelInductance < 0.0 ){
+            throw new Exception("Error: Invalid parallel inductance passed!");
+        } else if ( seriesInductance < 0.0 ){
+            throw new Exception("Error: Invalid series inductance passed!");
+        } else if ( parallelCurrentRating < 0.0 ){
+            throw new Exception("Error: Invalid parallel current rating passed!");
+        } else if ( seriesCurrentRating < 0.0 ){
+            throw new Exception("Error: Invalid series current rating passed!");
+        } else if ( parallelCurrentSaturation < 0.0 ){
+            throw new Exception("Error: Invalid parallel current saturation passed!");
+        } else if ( seriesCurrentSaturation < 0.0 ){
+            throw new Exception("Error: Invalid series current saturation passed!");
+        } else if ( parallelDCResistance < 0.0 ){
+            throw new Exception("Error: Invalid parallel DC resistance passed!");
+        } else if ( seriesDCResistance < 0.0 ){ 
+            throw new Exception("Error: Invalid series DC resistance passed!");
+        } else if ( operatingTemp < 0.0 ){
+            throw new Exception("Error: Invalid operating temperature passed!");
+        } else if (( height == null ) || ( height.length() == 0 )){
+            throw new Exception("Error: Invalid height passed!");
+        } else if (( size == null ) || ( size.length() == 0 )){
+            throw new Exception("Error: Invalid size passed!");
+        } else {
+            this.coilNumber = coilNumber;
+            this.parallelInductance = parallelInductance;
+            this.seriesInductance = seriesInductance;
+            this.parallelCurrentRating = parallelCurrentRating;
+            this.seriesCurrentRating = seriesCurrentRating;
+            this.parallelCurrentSaturation = parallelCurrentSaturation;
+            this.seriesCurrentSaturation = seriesCurrentSaturation;
+            this.parallelDCResistance = parallelDCResistance;
+            this.seriesDCResistance = seriesDCResistance;
+            this.operatingTemp = operatingTemp;
+            this.shielding = shielding;
+            this.rating = rating;
+            this.height = height;
+            this.size = size;
+        }
     }
 
     /**

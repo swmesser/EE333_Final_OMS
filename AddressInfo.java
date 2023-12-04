@@ -30,11 +30,21 @@ public class AddressInfo {
     /** 
      * Constructor for reading of address object
      */
-    public AddressInfo(String street, String city, String state, String zipcode){
-        this.street = street;
-        this.city = city;
-        this.state = state;
-        this.zipcode = zipcode;
+    public AddressInfo(String street, String city, String state, String zipcode) throws Exception{
+        if (( street == null ) || ( street.length() == 0 )){
+            throw new Exception("Error: Invalid street address parsed!");
+        } else if (( city == null ) || ( city.length() == 0 )){
+            throw new Exception("Error: Invalid city parsed!");
+        } else if (( state == null ) || ( state.length() == 0 )){
+            throw new Exception("Error: Invalid state parsed!");
+        } else if (( zipcode == null ) || ( zipcode.length() == 0)){
+            throw new Exception("Error: Invalid zipcode parsed!");
+        } else {
+            this.street = street;
+            this.city = city;
+            this.state = state;
+            this.zipcode = zipcode;
+        }
     }
 
     /**

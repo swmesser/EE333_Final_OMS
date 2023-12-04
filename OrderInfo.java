@@ -37,11 +37,18 @@ public class OrderInfo implements Exportable{
      * @param name
      * @param subTotal 
      */
-    public OrderInfo(String id, String name, double subTotal){
-        this.id = id;
-        this.name = name;
-        this.subTotal = subTotal;
-        this.total = (subTotal * 0.10) + subTotal; //Calculated using 10% tax
+    public OrderInfo(String id, String name, double subTotal) throws Exception{
+        //verification of valid parameters
+        if (( id == null ) | ( id.length() == 0 )){
+            throw new Exception("Error: Invalid Id parsed!");
+        } else if (( name == null ) | ( name.length() == 0 )){
+            throw new Exception("Error: Invalid name parsed!");
+        } else {
+            this.id = id;
+            this.name = name;
+            this.subTotal = subTotal;
+            //Setting total using the setTotal function
+        }
     }
     
     /**
@@ -105,15 +112,9 @@ public class OrderInfo implements Exportable{
                 subTotal = Double.parseDouble(Chunks[2]);
                 total = Double.parseDouble(Chunks[3]);
                 
-                //verification of valid parameters
-                if (( id == null ) | ( id.length() == 0 )){
-                    throw new Exception("Error: Invalid Id parsed!");
-                } else if (( name == null ) | ( name.length() == 0 )){
-                    throw new Exception("Error: Invalid name parsed!");
-                } else {
-                    order = new OrderInfo(id, name, subTotal);
-                    order.setTotal(total);
-                }
+                order = new OrderInfo(id, name, subTotal);
+                order.setTotal(total);
+                
             }
         }
         return order;

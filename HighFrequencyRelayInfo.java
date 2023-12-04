@@ -49,8 +49,13 @@ public final class HighFrequencyRelayInfo extends RelayInfo{
      */
     public HighFrequencyRelayInfo(String contactForm, RelayCoilType coil, double contactCurrentRating, double mustOperateVolt, double mustReleaseVolt, double operateTime, double releaseTime, double operationTemp, double coilVoltage, String features, String terminationStyle, RelayMountingType mount, String itemId, String name, String description, String mfg, String mfgPartNum, String series, int qty, double price) throws Exception {
         super(contactCurrentRating, mustOperateVolt, mustReleaseVolt, operateTime, releaseTime, operationTemp, coilVoltage, features, terminationStyle, mount, itemId, name, description, mfg, mfgPartNum, series, qty, price);
-        this.contactForm = contactForm;
-        this.coil = coil;
+        
+        if (( contactForm == null ) || ( contactForm.length() == 0 )){
+            throw new Exception("Error: Invalid contact form passed!");
+        } else { 
+            this.contactForm = contactForm;
+            this.coil = coil;
+        }
     }
     
     @Override

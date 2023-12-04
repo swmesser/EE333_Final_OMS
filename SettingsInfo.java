@@ -36,12 +36,24 @@ public class SettingsInfo {
      * @param productsRepo
      * @param format 
      */
-    public SettingsInfo(String userRepo, String customerRepo, String employeeRepo, String productsRepo, String format) {
-        this.userRepo = userRepo;
-        this.customerRepo = customerRepo;
-        this.employeeRepo = employeeRepo;
-        this.productsRepo = productsRepo;
-        this.format = format;
+    public SettingsInfo(String userRepo, String customerRepo, String employeeRepo, String productsRepo, String format) throws Exception {
+        if (( userRepo == null) || ( userRepo.length() == 0 )){
+            throw new Exception("Error: Invalid user repo parsed!");
+        } else if (( customerRepo == null ) || ( customerRepo.length() == 0 )){
+            throw new Exception("Error: Invalid customer repo parsed!");
+        } else if (( employeeRepo == null ) || ( employeeRepo.length() == 0 )){
+            throw new Exception("Error: Invalid employee repo parsed!");
+        } else if (( productsRepo == null ) || ( productsRepo.length() == 0 )){
+            throw new Exception("Error: Invalid products repo parsed!");
+        } else if (( format == null ) || ( format.length() == 0 )){
+            throw new Exception("Error: Invalid format parsed!");
+        } else {
+            this.userRepo = userRepo;
+            this.customerRepo = customerRepo;
+            this.employeeRepo = employeeRepo;
+            this.productsRepo = productsRepo;
+            this.format = format;
+        }
     }
     
     /**
@@ -104,19 +116,7 @@ public class SettingsInfo {
                 productsRepo = Chunks[3];
                 format = Chunks[4];
                 
-                if (( userRepo == null) || ( userRepo.length() == 0 )){
-                    throw new Exception("Error: Invalid user repo parsed!");
-                } else if (( customerRepo == null ) || ( customerRepo.length() == 0 )){
-                    throw new Exception("Error: Invalid customer repo parsed!");
-                } else if (( employeeRepo == null ) || ( employeeRepo.length() == 0 )){
-                    throw new Exception("Error: Invalid employee repo parsed!");
-                } else if (( productsRepo == null ) || ( productsRepo.length() == 0 )){
-                    throw new Exception("Error: Invalid products repo parsed!");
-                } else if (( format == null ) || ( format.length() == 0 )){
-                    throw new Exception("Error: Invalid format parsed!");
-                } else {
-                    settings = new SettingsInfo(userRepo, customerRepo, employeeRepo, productsRepo, format);
-                }
+                settings = new SettingsInfo(userRepo, customerRepo, employeeRepo, productsRepo, format);
             }
         }
         
@@ -182,19 +182,8 @@ public class SettingsInfo {
                         format = matcher.group(1);
                     }
                     
-                    if (( userRepo == null) || ( userRepo.length() == 0 )){
-                        throw new Exception("Error: Invalid user repo parsed!");
-                    } else if (( customerRepo == null ) || ( customerRepo.length() == 0 )){
-                        throw new Exception("Error: Invalid customer repo parsed!");
-                    } else if (( employeeRepo == null ) || ( employeeRepo.length() == 0 )){
-                        throw new Exception("Error: Invalid employee repo parsed!");
-                    } else if (( productsRepo == null ) || ( productsRepo.length() == 0 )){
-                        throw new Exception("Error: Invalid products repo parsed!");
-                    } else if (( format == null ) || ( format.length() == 0 )){
-                        throw new Exception("Error: Invalid format parsed!");
-                    } else {
-                        settings = new SettingsInfo(userRepo, customerRepo, employeeRepo, productsRepo, format);
-                    }
+                    settings = new SettingsInfo(userRepo, customerRepo, employeeRepo, productsRepo, format);
+                    
                 }
             }
         }

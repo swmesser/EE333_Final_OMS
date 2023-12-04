@@ -48,10 +48,21 @@ public final class AdjustableInductorsInfo extends InductorCoilAndChokesInfo {
      */
     public AdjustableInductorsInfo(double inductance, String qAtFreq, String height, String size, double tolerance, InductorMountingType mount, String packageCase, String itemId, String name, String description, String mfg, String mfgPartNum, String series, int qty, double price) throws Exception {
         super(tolerance, mount, packageCase, itemId, name, description, mfg, mfgPartNum, series, qty, price);
-        this.inductance = inductance;
-        this.qAtFreq = qAtFreq;
-        this.height = height;
-        this.size = size;
+        
+        if ( inductance < 0.0 ){
+            throw new Exception("Error: Invalid inductance passed!");
+        } else if (( qAtFreq == null ) || ( qAtFreq.length() == 0 )){
+            throw new Exception("Error: Invalid q at frequency passed!");
+        } else if (( height == null ) || ( height.length() == 0 )){
+            throw new Exception("Error: Invalid height passed!");
+        } else if (( size == null ) || ( size.length() == 0 )){
+            throw new Exception("Error: Invalid size passed!");
+        } else {
+            this.inductance = inductance;
+            this.qAtFreq = qAtFreq;
+            this.height = height;
+            this.size = size;
+        }
     }
 
     /**

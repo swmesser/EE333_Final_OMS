@@ -41,9 +41,16 @@ public abstract class InductorCoilAndChokesInfo extends ProductInfo{
      */
     public InductorCoilAndChokesInfo(double tolerance, InductorMountingType mount, String packageCase, String itemId, String name, String description, String mfg, String mfgPartNum, String series, int qty, double price) throws Exception {
         super(itemId, name, description, mfg, mfgPartNum, series, qty, price);
-        this.tolerance = tolerance;
-        this.mount = mount;
-        this.packageCase = packageCase;
+        
+        if ( tolerance < 0.0 ){
+            throw new Exception("Error: Invalid tolerance passed!");
+        } else if (( packageCase == null ) || ( packageCase.length() == 0 )){
+            throw new Exception("Error: Invalid package case passed!");
+        } else {
+            this.tolerance = tolerance;
+            this.mount = mount;
+            this.packageCase = packageCase;
+        }
     }
     
     /**

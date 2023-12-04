@@ -35,11 +35,13 @@ public  class EmployeeInfo extends UserInfo {
      * @param userPassword
      * @param userRole 
      */
-    public EmployeeInfo(String firstname, String lastname, EmployeeRole role, String userId, String userName, String userPassword, UserType userRole) {
+    public EmployeeInfo(String firstname, String lastname, EmployeeRole role, String userId, String userName, String userPassword, UserType userRole) throws Exception{
         super(userId, userName, userPassword, userRole);
+        
         this.firstname = firstname;
         this.lastname = lastname;
         this.setRole(role);
+        
     }
     
     
@@ -118,16 +120,8 @@ public  class EmployeeInfo extends UserInfo {
                 lastname = Chunks[5];
                 role = EmployeeRole.valueOf(Chunks[6]);
                 
-                //validation of employee information
-                if (( userId == null ) || (userId.length() == 0)){
-                    throw new Exception("Error: Invalid userId parsed!");
-                } else if (( userName == null ) || ( userName.length() == 0 )){
-                    throw new Exception("Error: Invalid user name parsed!");
-                } else if (( userPassword == null ) || ( userPassword.length() == 0 )){
-                    throw new Exception("Error: Invalid user password parsed!");
-                } else {
-                    employee = new EmployeeInfo(firstname, lastname, role, userId, userName, userPassword, userRole);
-                }
+                employee = new EmployeeInfo(firstname, lastname, role, userId, userName, userPassword, userRole);
+                
             }
         }
         
@@ -215,14 +209,10 @@ public  class EmployeeInfo extends UserInfo {
                             role = EmployeeRole.valueOf( matcher.group(1));
                         }
                         
-                        if (( firstname == null ) || ( firstname.length() == 0 )){
-                            throw new Exception("Error: Invalid firstname parsed!");
-                        } else if (( lastname == null ) || ( lastname.length() == 0 )){
-                            throw new Exception("Error: Invalid lastname parsed!");
-                        } else {
-                            employee = new EmployeeInfo(firstname, lastname, role,
+                        
+                        employee = new EmployeeInfo(firstname, lastname, role,
                                     userId, userName, userPassword, userRole);
-                        }
+                        
                     }
                     
                 }

@@ -64,13 +64,28 @@ public final class PowerRelayInfo extends RelayInfo{
      */
     public PowerRelayInfo(double coilCurrent, String coilInsulation, String contactForm, RelayCoilType coil, String sealRating, String contactMaterial, String relayType, double contactCurrentRating, double mustOperateVolt, double mustReleaseVolt, double operateTime, double releaseTime, double operationTemp, double coilVoltage, String features, String terminationStyle, RelayMountingType mount, String itemId, String name, String description, String mfg, String mfgPartNum, String series, int qty, double price) throws Exception {
         super(contactCurrentRating, mustOperateVolt, mustReleaseVolt, operateTime, releaseTime, operationTemp, coilVoltage, features, terminationStyle, mount, itemId, name, description, mfg, mfgPartNum, series, qty, price);
-        this.coilCurrent = coilCurrent;
-        this.coilInsulation = coilInsulation;
-        this.contactForm = contactForm;
-        this.coil = coil;
-        this.sealRating = sealRating;
-        this.contactMaterial = contactMaterial;
-        this.relayType = relayType;
+        
+        if ( coilCurrent < 0.0 ){
+            throw new Exception("Error: Invalid coil current passed!");
+        } else if (( coilInsulation == null ) || ( coilInsulation.length() == 0 )){
+            throw new Exception("Error: Invalid coil insulation passed!");
+        } else if (( contactForm == null ) || ( contactForm.length() == 0 )){
+            throw new Exception("Error: Invalid contact form passed!");
+        } else if (( sealRating == null ) || ( sealRating.length() == 0 )){
+            throw new Exception("Error: Invalid seal rating passed!");
+        } else if (( contactMaterial == null ) || ( contactMaterial.length() == 0 )){
+            throw new Exception("Error: Invalid contact material passed!");
+        } else if (( relayType == null ) || ( relayType.length() == 0 )){
+            throw new Exception("Error: Invallid relay type passed!");
+        } else {
+            this.coilCurrent = coilCurrent;
+            this.coilInsulation = coilInsulation;
+            this.contactForm = contactForm;
+            this.coil = coil;
+            this.sealRating = sealRating;
+            this.contactMaterial = contactMaterial;
+            this.relayType = relayType;
+        }
     }
     
     /**

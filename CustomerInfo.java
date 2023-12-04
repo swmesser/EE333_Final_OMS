@@ -29,14 +29,27 @@ public  class CustomerInfo extends UserInfo {
         
     }
 
-    public CustomerInfo(String firstname, String lastname, String email, AddressInfo shippingAddress, AddressInfo billingAddress, CustomerStatus status, String userId, String userName, String userPassword, UserType userRole) {
+    public CustomerInfo(String firstname, String lastname, String email, AddressInfo shippingAddress, AddressInfo billingAddress, CustomerStatus status, String userId, String userName, String userPassword, UserType userRole) throws Exception{
         super(userId, userName, userPassword, userRole);
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.email = email;
-        this.shippingAddress = shippingAddress;
-        this.billingAddress = billingAddress;
-        this.status = status;
+        
+        if (( firstname == null ) || ( firstname.length() == 0 )){
+            throw new Exception("Error: Invalid firstname parsed!");
+        } else if (( lastname == null ) || ( lastname.length() == 0 )){
+            throw new Exception("Error: Invalid lastname parsed!");
+        } else if (( email == null ) || ( email.length() == 0 )){
+            throw new Exception("Error: Invalid email parsed!");
+        } else if ( shippingAddress == null ){
+            throw new Exception("Error: Invalid shipping address passed!");
+        } else if ( billingAddress == null ){
+            throw new Exception("Error: Invalid billing address passed!");
+        } else {
+            this.firstname = firstname;
+            this.lastname = lastname;
+            this.email = email;
+            this.shippingAddress = shippingAddress;
+            this.billingAddress = billingAddress;
+            this.status = status;
+        }
     }
     
     
@@ -141,41 +154,14 @@ public  class CustomerInfo extends UserInfo {
                 billingZipcode = Chunks[14];
                 status = CustomerStatus.valueOf(Chunks[15]);
                 
-                if (( shippingStreet == null ) || ( shippingStreet.length() == 0 )){
-                    throw new Exception("Error: Invalid street address parsed!");
-                } else if (( shippingCity == null ) || ( shippingCity.length() == 0 )){
-                    throw new Exception("Error: Invalid city parsed!");
-                } else if (( shippingState == null ) || ( shippingState.length() == 0 )){
-                    throw new Exception("Error: Invalid state parsed!");
-                } else if (( shippingZipcode == null ) || ( shippingZipcode.length() == 0)){
-                    throw new Exception("Error: Invalid zipcode parsed!");
-                } else {
-                    shipping = new AddressInfo( shippingStreet, shippingCity, shippingState, shippingZipcode);
-                    
-                    //If shipping is valid test billing
-                    if (( billingStreet == null ) || ( billingStreet.length() == 0 )){
-                        throw new Exception("Error: Invalid street address parsed!");
-                    } else if (( billingCity == null ) || ( billingCity.length() == 0 )){
-                        throw new Exception("Error: Invalid city parsed!");
-                    } else if (( billingState == null ) || ( billingState.length() == 0 )){
-                        throw new Exception("Error: Invalid state parsed!");
-                    } else if (( billingZipcode == null ) || ( billingZipcode.length() == 0)){
-                        throw new Exception("Error: Invalid zipcode parsed!");
-                    } else {
-                        billing = new AddressInfo( billingStreet, billingCity, billingState, billingZipcode);
-                        //if billing is valid create customer
-                        if (( firstname == null ) || ( firstname.length() == 0 )){
-                            throw new Exception("Error: Invalid firstname parsed!");
-                        } else if (( lastname == null ) || ( lastname.length() == 0 )){
-                            throw new Exception("Error: Invalid lastname parsed!");
-                        } else if (( email == null ) || ( email.length() == 0 )){
-                            throw new Exception("Error: Invalid email parsed!");
-                        } else {
-                            customer = new CustomerInfo(firstname, lastname, email, shipping, billing, 
-                                    status, userId, userName, userPassword, userRole);
-                        }
-                    }
-                }
+                shipping = new AddressInfo( shippingStreet, shippingCity, shippingState, shippingZipcode);
+
+                billing = new AddressInfo( billingStreet, billingCity, billingState, billingZipcode);
+                
+                customer = new CustomerInfo(firstname, lastname, email, shipping, billing, 
+                        status, userId, userName, userPassword, userRole);
+
+            
             }
         }
         
@@ -333,41 +319,13 @@ public  class CustomerInfo extends UserInfo {
                             status = CustomerStatus.valueOf( matcher.group(1));
                         }
   
-                        if (( shippingStreet == null ) || ( shippingStreet.length() == 0 )){
-                            throw new Exception("Error: Invalid street address parsed!");
-                        } else if (( shippingCity == null ) || ( shippingCity.length() == 0 )){
-                            throw new Exception("Error: Invalid city parsed!");
-                        } else if (( shippingState == null ) || ( shippingState.length() == 0 )){
-                            throw new Exception("Error: Invalid state parsed!");
-                        } else if (( shippingZipcode == null ) || ( shippingZipcode.length() == 0)){
-                            throw new Exception("Error: Invalid zipcode parsed!");
-                        } else {
-                            shipping = new AddressInfo( shippingStreet, shippingCity, shippingState, shippingZipcode);
+                        shipping = new AddressInfo( shippingStreet, shippingCity, shippingState, shippingZipcode);
 
-                            //If shipping is valid test billing
-                            if (( billingStreet == null ) || ( billingStreet.length() == 0 )){
-                                throw new Exception("Error: Invalid street address parsed!");
-                            } else if (( billingCity == null ) || ( billingCity.length() == 0 )){
-                                throw new Exception("Error: Invalid city parsed!");
-                            } else if (( billingState == null ) || ( billingState.length() == 0 )){
-                                throw new Exception("Error: Invalid state parsed!");
-                            } else if (( billingZipcode == null ) || ( billingZipcode.length() == 0)){
-                                throw new Exception("Error: Invalid zipcode parsed!");
-                            } else {
-                                billing = new AddressInfo( billingStreet, billingCity, billingState, billingZipcode);
-                                //if billing is valid create customer
-                                if (( firstname == null ) || ( firstname.length() == 0 )){
-                                    throw new Exception("Error: Invalid firstname parsed!");
-                                } else if (( lastname == null ) || ( lastname.length() == 0 )){
-                                    throw new Exception("Error: Invalid lastname parsed!");
-                                } else if (( email == null ) || ( email.length() == 0 )){
-                                    throw new Exception("Error: Invalid email parsed!");
-                                } else {
-                                    customer = new CustomerInfo(firstname, lastname, email, shipping, billing, 
-                                            status, userId, userName, userPassword, userRole);
-                                }
-                            }
-                        }
+                        billing = new AddressInfo( billingStreet, billingCity, billingState, billingZipcode);
+
+                        customer = new CustomerInfo(firstname, lastname, email, shipping, billing, 
+                            status, userId, userName, userPassword, userRole);
+
                     }
                 }
             }

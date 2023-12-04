@@ -60,14 +60,31 @@ public final class WirelessChargingCoilInfo extends InductorCoilAndChokesInfo {
      */
     public WirelessChargingCoilInfo(double inductance, double currentRating, double selfResonantFreq, double operatingTemp, WirelessCoilFunction function, String type, String qAtFreq, String size, double tolerance, InductorMountingType mount, String packageCase, String itemId, String name, String description, String mfg, String mfgPartNum, String series, int qty, double price) throws Exception {
         super(tolerance, mount, packageCase, itemId, name, description, mfg, mfgPartNum, series, qty, price);
-        this.inductance = inductance;
-        this.currentRating = currentRating;
-        this.selfResonantFreq = selfResonantFreq;
-        this.operatingTemp = operatingTemp;
-        this.function = function;
-        this.type = type;
-        this.qAtFreq = qAtFreq;
-        this.size = size;
+        
+        if ( inductance < 0.0 ){
+            throw new Exception("Error: Invalid inductance passed!");
+        } else if ( currentRating < 0.0 ){
+            throw new Exception("Error: Invalid current rating passed!");
+        } else if ( selfResonantFreq < 0.0 ){
+            throw new Exception("Error: Invalid self resonant frequency passed!");
+        } else if ( operatingTemp < 0.0 ){
+            throw new Exception("Error: Invalid operation temperature passed!");
+        } else if (( type == null ) || ( type.length() == 0 )){
+            throw new Exception("Error: Invalid type passed!");
+        } else if (( qAtFreq == null) || ( qAtFreq.length() == 0 )){
+            throw new Exception("Error: Invalid q at frequency passed!");
+        } else if (( size == null ) || ( size.length() == 0 )){
+            throw new Exception("Error: Invalid size passed!");
+        } else {
+            this.inductance = inductance;
+            this.currentRating = currentRating;
+            this.selfResonantFreq = selfResonantFreq;
+            this.operatingTemp = operatingTemp;
+            this.function = function;
+            this.type = type;
+            this.qAtFreq = qAtFreq;
+            this.size = size;
+        }
     }
     
     /**

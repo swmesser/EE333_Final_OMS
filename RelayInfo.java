@@ -62,16 +62,37 @@ public abstract class RelayInfo extends ProductInfo{
      */
     public RelayInfo(double contactCurrentRating, double mustOperateVolt, double mustReleaseVolt, double operateTime, double releaseTime, double operationTemp, double coilVoltage, String features, String terminationStyle, RelayMountingType mount, String itemId, String name, String description, String mfg, String mfgPartNum, String series, int qty, double price) throws Exception {
         super(itemId, name, description, mfg, mfgPartNum, series, qty, price);
-        this.contactCurrentRating = contactCurrentRating;
-        this.mustOperateVolt = mustOperateVolt;
-        this.mustReleaseVolt = mustReleaseVolt;
-        this.operateTime = operateTime;
-        this.releaseTime = releaseTime;
-        this.operationTemp = operationTemp;
-        this.coilVoltage = coilVoltage;
-        this.features = features;
-        this.terminationStyle = terminationStyle;
-        this.mount = mount;
+        
+        if ( contactCurrentRating < 0.0 ){
+            throw new Exception("Error: Invalid contact current rating passed!");
+        } else if ( mustOperateVolt < 0.0 ){
+            throw new Exception("Error: Invalid must operate voltage passed!");
+        } else if ( mustReleaseVolt < 0.0 ){
+            throw new Exception("Error: Invalid must release voltage passed!");
+        } else if ( operateTime < 0.0 ){
+            throw new Exception("Error: Invalid operate time passed!");
+        } else if ( releaseTime < 0.0 ){
+            throw new Exception("Error: Invalid release time passed!");
+        } else if ( operationTemp < 0.0 ){
+            throw new Exception("Error: Invalid operation temperature passed!");
+        } else if ( coilVoltage < 0.0 ){
+            throw new Exception("Error: Invalid coil voltage passed!");
+        } else if (( features == null ) || ( features.length() == 0 )){
+            throw new Exception("Error: Invalid features passed!");
+        } else if (( terminationStyle == null ) || ( terminationStyle.length() == 0 )){
+            throw new Exception("Error: Invalid termination style passed!");
+        } else  {
+            this.contactCurrentRating = contactCurrentRating;
+            this.mustOperateVolt = mustOperateVolt;
+            this.mustReleaseVolt = mustReleaseVolt;
+            this.operateTime = operateTime;
+            this.releaseTime = releaseTime;
+            this.operationTemp = operationTemp;
+            this.coilVoltage = coilVoltage;
+            this.features = features;
+            this.terminationStyle = terminationStyle;
+            this.mount = mount;
+        }
     }
     
     /**

@@ -36,11 +36,20 @@ public class UserInfo implements Exportable {
      * @param userPassword
      * @param userRole 
      */
-    public UserInfo(String userId, String userName, String userPassword, UserType userRole) {
-        this.userId = userId;
-        this.userName = userName;
-        this.userPassword = userPassword;
-        this.setUserRole(userRole);
+    public UserInfo(String userId, String userName, String userPassword, UserType userRole) throws Exception{
+
+        if (( userId == null ) || ( userId.length() == 0 )){
+            throw new Exception("Error: Invalid user id parsed!");
+        } else if (( userName == null ) || ( userName.length() == 0 )){
+            throw new Exception("Error: Invalid user name parsed!");
+        } else if (( userPassword == null ) || ( userPassword.length() == 0 )){
+            throw new Exception("Error: Invalid user password parsed!");
+        } else {
+            this.userId = userId;
+            this.userName = userName;
+            this.userPassword = userPassword;
+            this.setUserRole(userRole);
+        }
     }
     
     enum UserType{
@@ -144,15 +153,8 @@ public class UserInfo implements Exportable {
                 userPassword = Chunks[2];
                 userRole = UserType.valueOf(Chunks[3]);
                 
-                if (( userId == null ) || (userId.length() == 0)){
-                    throw new Exception("Error: Invalid userId parsed!");
-                } else if (( userName == null ) || ( userName.length() == 0 )){
-                    throw new Exception("Error: Invalid user name parsed!");
-                } else if (( userPassword == null ) || ( userPassword.length() == 0 )){
-                    throw new Exception("Error: Invalid user password parsed!");
-                } else {
-                    user = new UserInfo(userId, userName, userPassword, userRole);
-                }
+                user = new UserInfo(userId, userName, userPassword, userRole);
+                
             }
         }
         
@@ -210,16 +212,9 @@ public class UserInfo implements Exportable {
                     if ( matcher.find() == true ){
                         userRole = UserType.valueOf( matcher.group(1));
                     }
+                
+                    user = new UserInfo(userId, userName, userPassword, userRole);
                     
-                    if (( userId == null ) || ( userId.length() == 0 )){
-                        throw new Exception("Error: Invalid user id parsed!");
-                    } else if (( userName == null ) || ( userName.length() == 0 )){
-                        throw new Exception("Error: Invalid user name parsed!");
-                    } else if (( userPassword == null ) || ( userPassword.length() == 0 )){
-                        throw new Exception("Error: Invalid user password parsed!");
-                    } else {
-                        user = new UserInfo(userId, userName, userPassword, userRole);
-                    }
                 }
             }
             
