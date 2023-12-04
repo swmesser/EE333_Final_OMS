@@ -90,7 +90,7 @@ public abstract class FilterInfo extends ProductInfo {
     }
     
     //Filter Enum
-    private enum FilterType {
+    enum FilterType {
         AM,
         FM,
         BandPass,
@@ -100,7 +100,7 @@ public abstract class FilterInfo extends ProductInfo {
         Unknown
     }
 
-    private enum MountingTypeEnum{
+    enum MountingTypeEnum{
         FreeHanging,
         SurfaceMount,
         ThroughHole,

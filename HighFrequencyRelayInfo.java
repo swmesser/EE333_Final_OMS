@@ -195,172 +195,177 @@ public final class HighFrequencyRelayInfo extends RelayInfo{
         RelayCoilType coil = RelayCoilType.Unknown;
         
         
-        
-        //Parsing input using regex
-        java.util.regex.Pattern regex = java.util.regex.Pattern.compile("<ProductInfo>(.*)</ProductInfo>");
-        //Matching the Pattern
-        java.util.regex.Matcher matcher = regex.matcher( input );
-        
-        //Looping through the groups captured using pattern matching
-        for ( int index = 0; index < matcher.groupCount(); index++){
-            //Testing to find match
-            if ( matcher.find() == true ){
-                //Pattern match for each of the fields in the Object
-                regex = Pattern.compile("<itemId>(.*)</itemId>");
-                matcher = regex.matcher(input);
+        if ( input == null ){
+            throw new Exception("Error: Null input passed!");
+        }else if ( input.length() == 0 ){
+            throw new Exception("Error: Zero length input passed!");
+        }else{
+            //Parsing input using regex
+            java.util.regex.Pattern regex = java.util.regex.Pattern.compile("<ProductInfo>(.*)</ProductInfo>");
+            //Matching the Pattern
+            java.util.regex.Matcher matcher = regex.matcher( input );
+
+            //Looping through the groups captured using pattern matching
+            for ( int index = 0; index < matcher.groupCount(); index++){
+                //Testing to find match
                 if ( matcher.find() == true ){
-                    id = matcher.group(1);
-                }
-                
-                regex = Pattern.compile("<name>(.*)</name>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    name = matcher.group(1);
-                }
-                
-                regex = Pattern.compile("<description>(.*)</description>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    description = matcher.group(1);
-                }
-                
-                regex = Pattern.compile("<manufacturer>(.*)</manufacturer>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    manufacturer = matcher.group(1);
-                }
-                
-                regex = Pattern.compile("<mfgPartNumber>(.*)</mfgPartNumber>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    mfgPartNum = matcher.group(1);
-                }
-                
-                regex = Pattern.compile("<series>(.*)</series>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    series = matcher.group(1);
-                }
-                
-                regex = Pattern.compile("<availability>(.*)</availability>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    stock = StockOption.valueOf(matcher.group(1));
-                }
-                
-                regex = Pattern.compile("<status>(.*)</status>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    status = ProductStatus.valueOf(matcher.group(1));
-                }
-                
-                regex = Pattern.compile("<media>(.*)</media>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    media = MediaOption.valueOf(matcher.group(1));
-                }
-                
-                regex = Pattern.compile("<hazards>(.*)</hazards>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    hazard = EnvironmentalOption.valueOf(matcher.group(1));
-                }
-                
-                regex = Pattern.compile("<shippingPackage>(.*)</shippingPackage>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    shippingBox = PackageOption.valueOf(matcher.group(1));
-                }
-                
-                regex = Pattern.compile("<qtyAvailabile>(.*)</qtyAvailable>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    qtyAvailable = Integer.parseInt(matcher.group(1));
-                }
-                
-                regex = Pattern.compile("<price>(.*)</price>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    price = Double.parseDouble(matcher.group(1));
-                }
-                
-                regex = Pattern.compile("<contactCurrentRating>(.*)</contactCurrentRating>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    contactCurrentRating = Double.parseDouble(matcher.group(1));
-                }
-                
-                regex = Pattern.compile("<mustOperateVolt>(.*)</mustOperateVolt>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    mustOperateVolt = Double.parseDouble(matcher.group(1));
-                }
-                
-                regex = Pattern.compile("<mustReleaseVolt>(.*)</mustReleaseVolt>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    mustReleaseVolt = Double.parseDouble(matcher.group(1));
-                }
-                
-                regex = Pattern.compile("<operateTime>(.*)</operateTime>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    operateTime = Double.parseDouble(matcher.group(1));
-                }
-                
-                regex = Pattern.compile("<releaseTime>(.*)</releaseTime>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    releaseTime = Double.parseDouble(matcher.group(1));
-                }
-                
-                regex = Pattern.compile("<features>(.*)</featuresd>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    features = matcher.group(1);
-                }
-                
-                regex = Pattern.compile("<terminationStyle>(.*)</terminationStyle>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    terminationStyle = matcher.group(1);
-                }
-                
-                regex = Pattern.compile("<operationTemp>(.*)</operationTemp>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    operationTemp = Double.parseDouble(matcher.group(1));
-                }
-                
-                regex = Pattern.compile("<coilVoltage>(.*)</coilVoltage>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    coilVoltage = Double.parseDouble(matcher.group(1));
-                }
-                
-                regex = Pattern.compile("<mount>(.*)</mount>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    mount = RelayMountingType.valueOf(matcher.group(1));
-                }
-                
-                regex = Pattern.compile("<contactForm>(.*)</contactForm>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    contactForm = matcher.group(1);
-                }
-                
-                regex = Pattern.compile("<coil>(.*)</coil>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    coil = RelayCoilType.valueOf(matcher.group(1));
+                    //Pattern match for each of the fields in the Object
+                    regex = Pattern.compile("<itemId>(.*)</itemId>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        id = matcher.group(1);
+                    }
+
+                    regex = Pattern.compile("<name>(.*)</name>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        name = matcher.group(1);
+                    }
+
+                    regex = Pattern.compile("<description>(.*)</description>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        description = matcher.group(1);
+                    }
+
+                    regex = Pattern.compile("<manufacturer>(.*)</manufacturer>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        manufacturer = matcher.group(1);
+                    }
+
+                    regex = Pattern.compile("<mfgPartNumber>(.*)</mfgPartNumber>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        mfgPartNum = matcher.group(1);
+                    }
+
+                    regex = Pattern.compile("<series>(.*)</series>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        series = matcher.group(1);
+                    }
+
+                    regex = Pattern.compile("<availability>(.*)</availability>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        stock = StockOption.valueOf(matcher.group(1));
+                    }
+
+                    regex = Pattern.compile("<status>(.*)</status>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        status = ProductStatus.valueOf(matcher.group(1));
+                    }
+
+                    regex = Pattern.compile("<media>(.*)</media>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        media = MediaOption.valueOf(matcher.group(1));
+                    }
+
+                    regex = Pattern.compile("<hazards>(.*)</hazards>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        hazard = EnvironmentalOption.valueOf(matcher.group(1));
+                    }
+
+                    regex = Pattern.compile("<shippingPackage>(.*)</shippingPackage>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        shippingBox = PackageOption.valueOf(matcher.group(1));
+                    }
+
+                    regex = Pattern.compile("<qtyAvailabile>(.*)</qtyAvailable>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        qtyAvailable = Integer.parseInt(matcher.group(1));
+                    }
+
+                    regex = Pattern.compile("<price>(.*)</price>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        price = Double.parseDouble(matcher.group(1));
+                    }
+
+                    regex = Pattern.compile("<contactCurrentRating>(.*)</contactCurrentRating>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        contactCurrentRating = Double.parseDouble(matcher.group(1));
+                    }
+
+                    regex = Pattern.compile("<mustOperateVolt>(.*)</mustOperateVolt>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        mustOperateVolt = Double.parseDouble(matcher.group(1));
+                    }
+
+                    regex = Pattern.compile("<mustReleaseVolt>(.*)</mustReleaseVolt>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        mustReleaseVolt = Double.parseDouble(matcher.group(1));
+                    }
+
+                    regex = Pattern.compile("<operateTime>(.*)</operateTime>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        operateTime = Double.parseDouble(matcher.group(1));
+                    }
+
+                    regex = Pattern.compile("<releaseTime>(.*)</releaseTime>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        releaseTime = Double.parseDouble(matcher.group(1));
+                    }
+
+                    regex = Pattern.compile("<features>(.*)</featuresd>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        features = matcher.group(1);
+                    }
+
+                    regex = Pattern.compile("<terminationStyle>(.*)</terminationStyle>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        terminationStyle = matcher.group(1);
+                    }
+
+                    regex = Pattern.compile("<operationTemp>(.*)</operationTemp>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        operationTemp = Double.parseDouble(matcher.group(1));
+                    }
+
+                    regex = Pattern.compile("<coilVoltage>(.*)</coilVoltage>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        coilVoltage = Double.parseDouble(matcher.group(1));
+                    }
+
+                    regex = Pattern.compile("<mount>(.*)</mount>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        mount = RelayMountingType.valueOf(matcher.group(1));
+                    }
+
+                    regex = Pattern.compile("<contactForm>(.*)</contactForm>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        contactForm = matcher.group(1);
+                    }
+
+                    regex = Pattern.compile("<coil>(.*)</coil>");
+                    matcher = regex.matcher(input);
+                    if ( matcher.find() == true ){
+                        coil = RelayCoilType.valueOf(matcher.group(1));
+                    }
                 }
             }
-        }
-        highFreqRelay = new HighFrequencyRelayInfo(contactForm, coil, contactCurrentRating,
-                mustOperateVolt, mustReleaseVolt, operateTime, releaseTime, operationTemp,
-                coilVoltage, features, terminationStyle, mount, id, name, description, manufacturer,
-                mfgPartNum, series, qtyAvailable, price);
+            highFreqRelay = new HighFrequencyRelayInfo(contactForm, coil, contactCurrentRating,
+                    mustOperateVolt, mustReleaseVolt, operateTime, releaseTime, operationTemp,
+                    coilVoltage, features, terminationStyle, mount, id, name, description, manufacturer,
+                    mfgPartNum, series, qtyAvailable, price);
+    }
         
         return( highFreqRelay );
     }
