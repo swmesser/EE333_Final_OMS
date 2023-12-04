@@ -3,40 +3,39 @@ package OMS;
 import java.util.regex.Pattern;
 
 /* 
- * File: AutomotiveRelayInfo
+ * File: AdjustableInductorsInfo
  * Copy: Copyright (c) 2023 Samuel W. Messer
  * BlazerID: swmesser
  * Vers: 1.0.0 Dec 3, 2023 SWM - Original Coding
  * Desc: Driver for testing concepts
  */
 
-public final class AutomotiveRelayInfo extends RelayInfo{
-    private double coilCurrent;
-    private RelayCoilType coil;
+public final class AdjustableInductorsInfo extends InductorCoilAndChokesInfo {
+    private double inductance;
+    private String qAtFreq;
+    private String height;
+    private String size;
 
     /**
-     * Constructor for automotive relay init
+     * Constructor for adjustable inductor init
      */
-    public AutomotiveRelayInfo(){
+    public AdjustableInductorsInfo(){
         super();
-        this.coilCurrent = 0.0;
-        this.coil = RelayCoilType.Unknown;
+        this.inductance = 0.0;
+        this.qAtFreq = "";
+        this.height = "";
+        this.size = "";
     }
 
     /**
-     * Constructor for importing automotive relay objects
-     * @param coilCurrent
-     * @param coil
-     * @param contactCurrentRating
-     * @param mustOperateVolt
-     * @param mustReleaseVolt
-     * @param operateTime
-     * @param releaseTime
-     * @param operationTemp
-     * @param coilVoltage
-     * @param features
-     * @param terminationStyle
+     * Constructor for importing adjustable inductors
+     * @param inductance
+     * @param qAtFreq
+     * @param height
+     * @param size
+     * @param tolerance
      * @param mount
+     * @param packageCase
      * @param itemId
      * @param name
      * @param description
@@ -47,14 +46,16 @@ public final class AutomotiveRelayInfo extends RelayInfo{
      * @param price
      * @throws Exception 
      */
-    public AutomotiveRelayInfo(double coilCurrent, RelayCoilType coil, double contactCurrentRating, double mustOperateVolt, double mustReleaseVolt, double operateTime, double releaseTime, double operationTemp, double coilVoltage, String features, String terminationStyle, RelayMountingType mount, String itemId, String name, String description, String mfg, String mfgPartNum, String series, int qty, double price) throws Exception {
-        super(contactCurrentRating, mustOperateVolt, mustReleaseVolt, operateTime, releaseTime, operationTemp, coilVoltage, features, terminationStyle, mount, itemId, name, description, mfg, mfgPartNum, series, qty, price);
-        this.coilCurrent = coilCurrent;
-        this.coil = coil;
+    public AdjustableInductorsInfo(double inductance, String qAtFreq, String height, String size, double tolerance, InductorMountingType mount, String packageCase, String itemId, String name, String description, String mfg, String mfgPartNum, String series, int qty, double price) throws Exception {
+        super(tolerance, mount, packageCase, itemId, name, description, mfg, mfgPartNum, series, qty, price);
+        this.inductance = inductance;
+        this.qAtFreq = qAtFreq;
+        this.height = height;
+        this.size = size;
     }
-    
+
     /**
-     * CSV format for automotive relay
+     * CSV format for adjustable inductors
      * @return 
      */
     @Override
@@ -62,14 +63,16 @@ public final class AutomotiveRelayInfo extends RelayInfo{
         String output = "";
         
         output += super.toCSV(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-        output += this.getCoilCurrent() + ",";
-        output += this.getCoil() + "\n";
+        output += this.getInductance() + ",";
+        output += this.getqAtFreq() + ",";
+        output += this.getHeight() + ",";
+        output += this.getSize() + "\n";
         
         return(output);
     }
 
     /**
-     * XML format for automotive relay
+     * XML format for adjustable inductors
      * @return 
      */
     @Override
@@ -77,24 +80,26 @@ public final class AutomotiveRelayInfo extends RelayInfo{
         String output = "";
         
         output += super.toXML(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-        output += "         <AutomotiveRelayInfo>\n";
-        output += "             <coilCurrent>" + this.getCoilCurrent() + "</coilCurrent>\n";
-        output += "             <coil>" + this.getCoil() + "</coil>\n";
-        output += "         </AutomotiveRelayInfo>\n";
-        output += "     </RelayInfo>\n";
+        output += "         <AdjustableInductors>\n";
+        output += "             <inductance>" + this.getInductance() + "</inductance>\n";
+        output += "             <qAtFreq>" + this.getqAtFreq() + "</qAtFreq>\n";
+        output += "             <height>" + this.getHeight() + "</height>\n";
+        output += "             <size>" + this.getSize() + "</size>\n";
+        output += "         </AdjustableInductors>\n";
+        output += "     </InductorCoilAndChokesInfo>\n";
         output += "</ProductInfo>\n";
         
         return(output);
     }
 
     /**
-     * Import CSV formatted automotive relay objects
+     * CSV importing of adjustable inductors
      * @param input
      * @return
      * @throws Exception 
      */
-    public static AutomotiveRelayInfo fromCSV( String input ) throws Exception{
-        AutomotiveRelayInfo automotiveRelay = new AutomotiveRelayInfo();
+    public static AdjustableInductorsInfo fromCSV( String input ) throws Exception {
+        AdjustableInductorsInfo adjustableInductor = new AdjustableInductorsInfo();
         String[] Chunks;
         //Product
         String id = "";
@@ -110,21 +115,15 @@ public final class AutomotiveRelayInfo extends RelayInfo{
         MediaOption media;
         PackageOption shippingBox;
         ProductStatus status;
-        //Relay
-        double contactCurrentRating = 0.0;
-        double mustOperateVolt = 0.0;
-        double mustReleaseVolt = 0.0;
-        double operateTime = 0.0;
-        double releaseTime = 0.0;
-        double operationTemp = 0.0;
-        double coilVoltage = 0.0;
-        String features = "";
-        String terminationStyle = "";
-        RelayMountingType mount = RelayMountingType.Unknown;
-        //AutomotiveRelay
-        double coilCurrent;
-        RelayCoilType coil;
-        
+        //InductorCoilAndChoke
+        double tolerance = 0.0;
+        InductorMountingType mount = InductorMountingType.Unknown;
+        String packageCase = "";
+        //AdjustableInductors
+        double inductance = 0.0;
+        String qAtFreq;
+        String height;
+        String size;
         
         //Validate input 
         if ( input == null ){
@@ -134,7 +133,7 @@ public final class AutomotiveRelayInfo extends RelayInfo{
         } else {
             //Split line based on comma
             Chunks = input.split(",");
-            if ( Chunks.length == 25 ){
+            if ( Chunks.length == 20 ){
                 //Assign all parameters
                 //ProductInfo Params
                 id = Chunks[ 0 ];
@@ -151,40 +150,34 @@ public final class AutomotiveRelayInfo extends RelayInfo{
                 qtyAvailable = Integer.valueOf(Chunks[ 11 ]);
                 price = Double.valueOf( Chunks[ 12 ]);
                 //==================
-                //RelayInfo Params
-                contactCurrentRating = Double.parseDouble(Chunks[ 13 ]);
-                mustOperateVolt = Double.parseDouble(Chunks[ 14 ]);
-                mustReleaseVolt = Double.parseDouble(Chunks[ 15 ]);
-                operateTime = Double.parseDouble(Chunks[ 16 ]);
-                releaseTime =  Double.parseDouble(Chunks[ 17 ]);
-                features = Chunks[ 18 ];
-                terminationStyle = Chunks[ 19 ];
-                operationTemp = Double.parseDouble(Chunks[ 20 ]);
-                coilVoltage = Double.parseDouble(Chunks[ 21 ]);
-                mount = RelayMountingType.valueOf( Chunks[ 22 ] );
+                //InductorCoilAndChokeInfo Params
+                tolerance = Double.parseDouble(Chunks[ 13 ]);
+                mount = InductorMountingType.valueOf( Chunks[ 14 ]);
+                packageCase = Chunks[ 15 ];
                 //==================
-                //AutomotiveRelayInfo
-                coilCurrent = Double.parseDouble(Chunks[ 23 ]);
-                coil = RelayCoilType.valueOf( Chunks[ 24 ]);
+                //AdjustableInductorsInfo Params
+                inductance = Double.parseDouble(Chunks[ 16 ]);
+                qAtFreq = Chunks[ 17 ];
+                height = Chunks[ 18 ];
+                size = Chunks[ 19 ];
                 
-                //Param validation is in constructor
-                automotiveRelay = new AutomotiveRelayInfo(coilCurrent, coil, contactCurrentRating,
-                        mustOperateVolt, mustReleaseVolt, operateTime, releaseTime, operationTemp,
-                        coilVoltage, features, terminationStyle, mount, id, name, description,
-                        manufacturer, mfgPartNum, series, qtyAvailable, price);
+                adjustableInductor = new AdjustableInductorsInfo(inductance, qAtFreq, height, size, 
+                        tolerance, mount, packageCase, id, name, description, manufacturer, mfgPartNum,
+                        series, qtyAvailable, price);
             }
         }
-        return( automotiveRelay );
+        
+        return ( adjustableInductor );
     }
     
     /**
-     * XML format for automotive relay importing
+     * XML importing of adjustable inductors
      * @param input
      * @return
      * @throws Exception 
      */
-     public static AutomotiveRelayInfo fromXML( String input ) throws Exception{
-        AutomotiveRelayInfo automotiveRelay = new AutomotiveRelayInfo();
+    public static AdjustableInductorsInfo fromXML( String input ) throws Exception {
+        AdjustableInductorsInfo adjustableInductor = new AdjustableInductorsInfo();
         //Product
         String id = "";
         String name = "";
@@ -199,20 +192,15 @@ public final class AutomotiveRelayInfo extends RelayInfo{
         MediaOption media;
         PackageOption shippingBox;
         ProductStatus status;
-        //Relay
-        double contactCurrentRating = 0.0;
-        double mustOperateVolt = 0.0;
-        double mustReleaseVolt = 0.0;
-        double operateTime = 0.0;
-        double releaseTime = 0.0;
-        double operationTemp = 0.0;
-        double coilVoltage = 0.0;
-        String features = "";
-        String terminationStyle = "";
-        RelayMountingType mount = RelayMountingType.Unknown;
-        //AutomotiveRelay
-        double coilCurrent = 0.0;
-        RelayCoilType coil = RelayCoilType.Unknown;
+        //InductorCoilAndChokes
+        double tolerance = 0.0;
+        InductorMountingType mount = InductorMountingType.Unknown;
+        String packageCase = "";
+        //AdjustableInductors
+        double inductance = 0.0;
+        String qAtFreq = "";
+        String height = "";
+        String size = "";
         
         
         //Parsing input using regex
@@ -303,113 +291,110 @@ public final class AutomotiveRelayInfo extends RelayInfo{
                     price = Double.parseDouble(matcher.group(1));
                 }
                 
-                regex = Pattern.compile("<contactCurrentRating>(.*)</contactCurrentRating>");
+                regex = Pattern.compile("<tolerance>(.*)</tolerance>");
                 matcher = regex.matcher(input);
                 if ( matcher.find() == true ){
-                    contactCurrentRating = Double.parseDouble(matcher.group(1));
-                }
-                
-                regex = Pattern.compile("<mustOperateVolt>(.*)</mustOperateVolt>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    mustOperateVolt = Double.parseDouble(matcher.group(1));
-                }
-                
-                regex = Pattern.compile("<mustReleaseVolt>(.*)</mustReleaseVolt>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    mustReleaseVolt = Double.parseDouble(matcher.group(1));
-                }
-                
-                regex = Pattern.compile("<operateTime>(.*)</operateTime>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    operateTime = Double.parseDouble(matcher.group(1));
-                }
-                
-                regex = Pattern.compile("<releaseTime>(.*)</releaseTime>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    releaseTime = Double.parseDouble(matcher.group(1));
-                }
-                
-                regex = Pattern.compile("<features>(.*)</featuresd>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    features = matcher.group(1);
-                }
-                
-                regex = Pattern.compile("<terminationStyle>(.*)</terminationStyle>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    terminationStyle = matcher.group(1);
-                }
-                
-                regex = Pattern.compile("<operationTemp>(.*)</operationTemp>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    operationTemp = Double.parseDouble(matcher.group(1));
-                }
-                
-                regex = Pattern.compile("<coilVoltage>(.*)</coilVoltage>");
-                matcher = regex.matcher(input);
-                if ( matcher.find() == true ){
-                    coilVoltage = Double.parseDouble(matcher.group(1));
+                    tolerance = Double.parseDouble(matcher.group(1));
                 }
                 
                 regex = Pattern.compile("<mount>(.*)</mount>");
                 matcher = regex.matcher(input);
                 if ( matcher.find() == true ){
-                    mount = RelayMountingType.valueOf(matcher.group(1));
+                    mount = InductorMountingType.valueOf( matcher.group(1));
                 }
                 
-                regex = Pattern.compile("<coilCurrent>(.*)</coilCurrent>");
+                regex = Pattern.compile("<packageCase>(.*)</packageCase>");
                 matcher = regex.matcher(input);
                 if ( matcher.find() == true ){
-                    coilCurrent = Double.parseDouble(matcher.group(1));
+                    packageCase = matcher.group(1);
                 }
                 
-                regex = Pattern.compile("<coil>(.*)</coil>");
+                regex = Pattern.compile("<inductance>(.*)</inductance>");
                 matcher = regex.matcher(input);
                 if ( matcher.find() == true ){
-                    coil = RelayCoilType.valueOf(matcher.group(1));
+                    inductance = Double.parseDouble(matcher.group(1));
                 }
                 
+                regex = Pattern.compile("<qAtFreq>(.*)</qAtFreq>");
+                matcher = regex.matcher(input);
+                if ( matcher.find() == true ){
+                    qAtFreq = matcher.group(1);
+                }
+                
+                regex = Pattern.compile("<height>(.*)</height>");
+                matcher = regex.matcher(input);
+                if ( matcher.find() == true ){
+                    height = matcher.group(1);
+                }
+                
+                regex = Pattern.compile("<size>(.*)</size>");
+                matcher = regex.matcher(input);
+                if ( matcher.find() == true ){
+                    size = matcher.group(1);
+                }
             }
         }
-        automotiveRelay = new AutomotiveRelayInfo(coilCurrent, coil, contactCurrentRating,
-                mustOperateVolt, mustReleaseVolt, operateTime, releaseTime, operationTemp,
-                coilVoltage, features, terminationStyle, mount, id, name, description,
-                manufacturer, mfgPartNum, series, qtyAvailable, price);
         
-        return( automotiveRelay );
+        adjustableInductor = new AdjustableInductorsInfo(inductance, qAtFreq, height,
+                size, tolerance, mount, packageCase, id, name, description, manufacturer,
+                mfgPartNum, series, qtyAvailable, price);
+        
+        return ( adjustableInductor );
     }
     
     /**
-     * @return the coilCurrent
+     * @return the inductance
      */
-    public double getCoilCurrent() {
-        return coilCurrent;
+    public double getInductance() {
+        return inductance;
     }
 
     /**
-     * @param coilCurrent the coilCurrent to set
+     * @param inductance the inductance to set
      */
-    public void setCoilCurrent(double coilCurrent) {
-        this.coilCurrent = coilCurrent;
+    public void setInductance(double inductance) {
+        this.inductance = inductance;
     }
 
     /**
-     * @return the coil
+     * @return the qAtFreq
      */
-    public RelayCoilType getCoil() {
-        return coil;
+    public String getqAtFreq() {
+        return qAtFreq;
     }
 
     /**
-     * @param coil the coil to set
+     * @param qAtFreq the qAtFreq to set
      */
-    public void setCoil(RelayCoilType coil) {
-        this.coil = coil;
+    public void setqAtFreq(String qAtFreq) {
+        this.qAtFreq = qAtFreq;
+    }
+
+    /**
+     * @return the height
+     */
+    public String getHeight() {
+        return height;
+    }
+
+    /**
+     * @param height the height to set
+     */
+    public void setHeight(String height) {
+        this.height = height;
+    }
+
+    /**
+     * @return the size
+     */
+    public String getSize() {
+        return size;
+    }
+
+    /**
+     * @param size the size to set
+     */
+    public void setSize(String size) {
+        this.size = size;
     }
 }

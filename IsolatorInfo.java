@@ -20,6 +20,59 @@ public abstract class IsolatorInfo extends ProductInfo{
     private String approvalAgency;
     private String supplierDevicePackage;
     
+    /**
+     * Constructor for isolator initialization
+     */
+    public IsolatorInfo(){
+        super();
+        this.channelCount = 0;
+        this.voltageIsolation = 0;
+        this.commonModeTransientImmunity = 0.0;
+        this.propagationDelay = 0.0;
+        this.riseFallTime = 0.0;
+        this.voltageSupply = 0.0;
+        this.operatingTemp = 0.0;
+        this.mountType = MountingType.Unknown;
+        this.approvalAgency = "";
+        this.supplierDevicePackage = "";
+    }
+
+    /**
+     * Constructor for importing of isolator object
+     * @param channelCount
+     * @param voltageIsolation
+     * @param commonModeTransientImmunity
+     * @param propagationDelay
+     * @param riseFallTime
+     * @param voltageSupply
+     * @param operatingTemp
+     * @param mountType
+     * @param approvalAgency
+     * @param supplierDevicePackage
+     * @param itemId
+     * @param name
+     * @param description
+     * @param mfg
+     * @param mfgPartNum
+     * @param series
+     * @param qty
+     * @param price
+     * @throws Exception 
+     */
+    public IsolatorInfo(int channelCount, int voltageIsolation, double commonModeTransientImmunity, double propagationDelay, double riseFallTime, double voltageSupply, double operatingTemp, MountingType mountType, String approvalAgency, String supplierDevicePackage, String itemId, String name, String description, String mfg, String mfgPartNum, String series, int qty, double price) throws Exception {
+        super(itemId, name, description, mfg, mfgPartNum, series, qty, price);
+        this.channelCount = channelCount;
+        this.voltageIsolation = voltageIsolation;
+        this.commonModeTransientImmunity = commonModeTransientImmunity;
+        this.propagationDelay = propagationDelay;
+        this.riseFallTime = riseFallTime;
+        this.voltageSupply = voltageSupply;
+        this.operatingTemp = operatingTemp;
+        this.mountType = mountType;
+        this.approvalAgency = approvalAgency;
+        this.supplierDevicePackage = supplierDevicePackage;
+    }
+    
     private enum MountingType {
         Surface,
         Hole,
@@ -28,99 +81,190 @@ public abstract class IsolatorInfo extends ProductInfo{
         FreeHanging,
         Unknown
     }
-}
 
-final class DigitalIsolatorInfo extends IsolatorInfo {
-    private double dataRate;
-    private double pulseWidthDistortion;
-    private String type;
-    private String inputsSide1Side2;
-    private String qualification;
-    
-    private enum Technology {
-        CapacitiveCoupling,
-        GMR,
-        MagneticCoupling,
-        Unknown
+    /**
+     * CSV format for isolator object
+     * @return 
+     */
+    public String toCSV(){
+       String output = "";
+       
+       output += super.toCSV();
+       output += this.channelCount + ",";
+       output += this.voltageIsolation + ",";
+       output += this.commonModeTransientImmunity + ",";
+       output += this.propagationDelay + ",";
+       output += this.riseFallTime + ",";
+       output += this.voltageSupply + ",";
+       output += this.operatingTemp + ",";
+       output += this.mountType + ",";
+       output += this.approvalAgency + ",";
+       output += this.supplierDevicePackage + ",";
+       
+       return output;
     }
     
-    private enum IsolatedPower {
-        Yes,
-        No,
-        Unknown
+    /**
+     * XML format for isolator object
+     * @return 
+     */
+    public String toXML(){
+        String output = "";
+        
+        output += "         <IsolatorInfo>\n";
+        output += "             <channelCount>" + this.channelCount + "</channelCount>\n";
+        output += "             <voltageIsolation>" + this.voltageIsolation + "</voltageIsolation>\n";
+        output += "             <commonModeTransientImmunity>" + this.commonModeTransientImmunity + "</commonModeTransientImmunity>\n";
+        output += "             <propagationDelay>" + this.propagationDelay + "</propagationDelay>\n";
+        output += "             <riseFallTime>" + this.riseFallTime + "</riseFallTime>\n";
+        output += "             <voltageSupply>" + this.voltageSupply + "</voltageSupply>\n";
+        output += "             <operatingTemp>" + this.operatingTemp + "</operatingTemp>\n";
+        output += "             <mountType>" + this.mountType + "</mountType>\n";
+        output += "             <approvalAgency>" + this.approvalAgency + "</approvalAgency>\n";
+        output += "             <supplierDevicePackage>" + this.supplierDevicePackage + "</supplierDevicePackage>\n";
+        
+        return output;
     }
     
-    private enum ChannelType {
-        Bidirectional,
-        Unidirectional,
-        Unknown
+    /**
+     * @return the channelCount
+     */
+    public int getChannelCount() {
+        return channelCount;
     }
-    
-    private enum GradeType {
-        Automotive,
-        Unknown
-    }
-}
 
-final class GateDriverInfo extends IsolatorInfo {
-    private int forwardDCCureent;
-    private double pulseWidthDistortion;
-    private double peakOutputCurrent;
-    private double forwardVoltage;
-    private String qualification;
-    
-    private enum Technology{
-        CapacitiveCoupling,
-        OpticalCoupling,
-        MagneticCoupling,
-        RFCoupling,
-        Unknown
+    /**
+     * @param channelCount the channelCount to set
+     */
+    public void setChannelCount(int channelCount) {
+        this.channelCount = channelCount;
     }
-    
-    private enum GradeType{
-        Automotive,
-        Unknown
-    }
-    
-}
 
-final class SCROutputOptoisolatorInfo extends IsolatorInfo{
-    private int turnOnTime;
-    private int forwardCurrent;
-    private double voltageOffState;
-    private double maximumLEDTriggerCurrent;
-    private double currentOnState;
-    private double holdCurrent;
-    private double forwardVoltage;
-    private double staticDvDt;
-    
-    
-    private enum OutputType {
-        SCR,
-        Triac,
-        PowerTriac,
-        Unknown
+    /**
+     * @return the voltageIsolation
+     */
+    public int getVoltageIsolation() {
+        return voltageIsolation;
     }
-    
-    private enum ZeroCrossingCircuit {
-        Yes,
-        No,
-        Unknown
-    }
-    
-}
 
-final class SpecialIsolatorInfo extends IsolatorInfo {
-    private int outputCurrent;
-    private int forwardCurrent;
-    private double forwardVoltage;
-    private InputType inputType;
-    
-    private enum InputType{
-        AC,
-        DC,
-        I2C,
-        Logic,
-        Unknown
+    /**
+     * @param voltageIsolation the voltageIsolation to set
+     */
+    public void setVoltageIsolation(int voltageIsolation) {
+        this.voltageIsolation = voltageIsolation;
     }
+
+    /**
+     * @return the commonModeTransientImmunity
+     */
+    public double getCommonModeTransientImmunity() {
+        return commonModeTransientImmunity;
+    }
+
+    /**
+     * @param commonModeTransientImmunity the commonModeTransientImmunity to set
+     */
+    public void setCommonModeTransientImmunity(double commonModeTransientImmunity) {
+        this.commonModeTransientImmunity = commonModeTransientImmunity;
+    }
+
+    /**
+     * @return the propagationDelay
+     */
+    public double getPropagationDelay() {
+        return propagationDelay;
+    }
+
+    /**
+     * @param propagationDelay the propagationDelay to set
+     */
+    public void setPropagationDelay(double propagationDelay) {
+        this.propagationDelay = propagationDelay;
+    }
+
+    /**
+     * @return the riseFallTime
+     */
+    public double getRiseFallTime() {
+        return riseFallTime;
+    }
+
+    /**
+     * @param riseFallTime the riseFallTime to set
+     */
+    public void setRiseFallTime(double riseFallTime) {
+        this.riseFallTime = riseFallTime;
+    }
+
+    /**
+     * @return the voltageSupply
+     */
+    public double getVoltageSupply() {
+        return voltageSupply;
+    }
+
+    /**
+     * @param voltageSupply the voltageSupply to set
+     */
+    public void setVoltageSupply(double voltageSupply) {
+        this.voltageSupply = voltageSupply;
+    }
+
+    /**
+     * @return the operatingTemp
+     */
+    public double getOperatingTemp() {
+        return operatingTemp;
+    }
+
+    /**
+     * @param operatingTemp the operatingTemp to set
+     */
+    public void setOperatingTemp(double operatingTemp) {
+        this.operatingTemp = operatingTemp;
+    }
+
+    /**
+     * @return the mountType
+     */
+    public MountingType getMountType() {
+        return mountType;
+    }
+
+    /**
+     * @param mountType the mountType to set
+     */
+    public void setMountType(MountingType mountType) {
+        this.mountType = mountType;
+    }
+
+    /**
+     * @return the approvalAgency
+     */
+    public String getApprovalAgency() {
+        return approvalAgency;
+    }
+
+    /**
+     * @param approvalAgency the approvalAgency to set
+     */
+    public void setApprovalAgency(String approvalAgency) {
+        this.approvalAgency = approvalAgency;
+    }
+
+    /**
+     * @return the supplierDevicePackage
+     */
+    public String getSupplierDevicePackage() {
+        return supplierDevicePackage;
+    }
+
+    /**
+     * @param supplierDevicePackage the supplierDevicePackage to set
+     */
+    public void setSupplierDevicePackage(String supplierDevicePackage) {
+        this.supplierDevicePackage = supplierDevicePackage;
+    }
+    
+    
 }
